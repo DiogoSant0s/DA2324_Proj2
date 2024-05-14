@@ -2,6 +2,7 @@
 
 Data::Data() : graph(Graph()), realGraph(false), tourismToyGraph(false), extraGraph(false) {
     report = {0, 0, 0, 0,0,0,0,0, 0, 0};
+    haversineReport = {0, 0, 0, 0,0,0,0,0, 0, 0};
 }
 
 Graph Data::getGraph() {return graph;}

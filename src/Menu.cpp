@@ -71,6 +71,10 @@ void Menu::SelectGraphMenu() {
     cout << "(0) Exit\n";
     cout << " > ";
 
+    if (!data.getGraph().getNodes().empty()) {
+        data = Data();
+    }
+
     int input = getUserInput({0, 1, 2, 3});
     switch (input) {
         case 1:
@@ -211,10 +215,11 @@ void Menu::MainMenu() {
     cout << "(4) Minimum Spanning Tree (worse aproximation but faster for larger graphs)\n";
     cout << "(5) Nearest Neighbor Algorithm\n";
     cout << "(6) \n";
+    cout << "(7) Select another graph\n";
     cout << "(0) Exit\n";
     cout << " > ";
 
-    int input = getUserInput({0, 1, 2, 3, 4, 5, 6});
+    int input = getUserInput({0, 1, 2, 3, 4, 5, 6, 7});
     switch (input) {
         case 1:
             InfoMenu();
@@ -223,27 +228,45 @@ void Menu::MainMenu() {
                 cout << "\nFinding cycle in the graph using backtracking. Please wait\n";
                 double distance = INT_MAX;
                 int shortestCycle[data.getGraph().getNodes().size()];
-
+                bool graphType;
+                if (data.getRealGraph()) {
+                    cout << "\nDo you want to use the real distances or the Haversine distances?\n";
+                    cout << "(1) Real distances\n";
+                    cout << "(2) Haversine distances\n";
+                    cout << " > ";
+                    int input1 = getUserInput({1, 2});
+                    if (input1 == 1) {
+                        graphType = false;
+                    }
+                    else {
+                        graphType = true;
+                    }
+                }
+                else {
+                    graphType = true;
+                }
                 struct timeval start{}, end{};
                 gettimeofday(&start, nullptr);
                 ios_base::sync_with_stdio(false);
-                data.getGraph().backtrackingApproach(distance, shortestCycle, true);
+                data.getGraph().backtrackingApproach(distance, shortestCycle, graphType);
                 gettimeofday(&end, nullptr);
 
                 for (int i = 0; i < data.getGraph().getNodes().size(); i++) {
                     Print(to_string(shortestCycle[i]), 6, false);
-                    if (i % 25 == 0 and i != 0) {
-                        cout << "\n";
-                    }
                 }
                 cout << "\n\nThe distance the travelling salesman travels is " <<  distance;
-                data.report.distBacktrack = distance;
-                data.report.timeBacktrack = printElapsedTime(start, end);
+                if (data.getRealGraph() && graphType) {
+                    data.haversineReport.distBacktrack = distance;
+                    data.haversineReport.timeBacktrack = printElapsedTime(start, end);
+                }
+                else {
+                    data.report.distBacktrack = distance;
+                    data.report.timeBacktrack = printElapsedTime(start, end);
+                }
             }
             break;
         case 3:
             if (!data.getGraph().getNodes().empty()) {
-                cout << "\nFinding cycle in the graph using Prim's algorithm. Please wait\n";
                 vector<int> path;
                 double distance = 0;
                 bool graphType;
@@ -263,26 +286,30 @@ void Menu::MainMenu() {
                 else {
                     graphType = true;
                 }
+                cout << "\nFinding cycle in the graph using Prim's algorithm. Please wait\n";
                 struct timeval start{}, end{};
                 gettimeofday(&start, nullptr);
                 ios_base::sync_with_stdio(false);
                 path = data.getGraph().primMST(graphType, distance);
                 gettimeofday(&end, nullptr);
 
-                for (int i = 0; i < path.size(); i++) {
-                    Print(to_string(path[i]), 6, false);
-                    if (i % 15 == 0 and i != 0) {
-                        cout << "\n";
-                    }
+                for (int i : path) {
+                    Print(to_string(i), 6, false);
+
                 }
                 cout << "\n\nThe distance the travelling salesman travels is " << distance;
-                data.report.distMST = distance;
-                data.report.timeMST = printElapsedTime(start, end);
+                if (data.getRealGraph() && graphType) {
+                    data.haversineReport.distMST = distance;
+                    data.haversineReport.timeMST = printElapsedTime(start, end);
+                }
+                else {
+                    data.report.distMST = distance;
+                    data.report.timeMST = printElapsedTime(start, end);
+                }
             }
             break;
         case 4:
             if (!data.getGraph().getNodes().empty()) {
-                cout << "\nFinding cycle in the graph using Prim's algorithm. Please wait\n";
                 vector<int> path;
                 double distance = 0;
                 bool graphType;
@@ -302,17 +329,15 @@ void Menu::MainMenu() {
                 else {
                     graphType = true;
                 }
+                cout << "\nFinding cycle in the graph using Prim's algorithm. Please wait\n";
                 struct timeval start{}, end{};
                 gettimeofday(&start, nullptr);
                 ios_base::sync_with_stdio(false);
                 path = data.getGraph().primMST2(graphType, distance);
                 gettimeofday(&end, nullptr);
 
-                for (int i = 0; i < path.size(); i++) {
-                    Print(to_string(path[i]), 6, false);
-                    if (i % 25 == 0 and i != 0) {
-                        cout << "\n";
-                    }
+                for (int i : path) {
+                    Print(to_string(i), 6, false);
                 }
                 cout << "\n\nThe distance the travelling salesman travels is " << distance;
                 data.report.distMST2 = distance;
@@ -321,7 +346,6 @@ void Menu::MainMenu() {
             break;
         case 5:
             if (!data.getGraph().getNodes().empty()) {
-                cout << "\nFinding cycle in the graph using the Nearest Neighbor algorithm. Please wait\n";
                 vector<int> path;
                 double distance = 0;
                 bool graphType;
@@ -341,21 +365,25 @@ void Menu::MainMenu() {
                 else {
                     graphType = true;
                 }
+                cout << "\nFinding cycle in the graph using the Nearest Neighbor algorithm. Please wait\n";
                 struct timeval start{}, end{};
                 gettimeofday(&start, nullptr);
                 ios_base::sync_with_stdio(false);
                 path = data.getGraph().nearestNeighbor(distance, graphType);
                 gettimeofday(&end, nullptr);
 
-                for (int i = 0; i < path.size(); i++) {
-                    Print(to_string(path[i]), 6, false);
-                    if (i % 25 == 0 and i != 0) {
-                        cout << "\n";
-                    }
+                for (int i : path) {
+                    Print(to_string(i), 6, false);
                 }
                 cout << "\n\nThe distance the travelling salesman travels is " << distance;
-                data.report.distNearNeighbor = distance;
-                data.report.timeNearNeighbor = printElapsedTime(start, end);
+                if (data.getRealGraph() && graphType) {
+                    data.haversineReport.distNearNeighbor = distance;
+                    data.haversineReport.timeNearNeighbor = printElapsedTime(start, end);
+                }
+                else {
+                    data.report.distNearNeighbor = distance;
+                    data.report.timeNearNeighbor = printElapsedTime(start, end);
+                }
             }
             break;
         case 6:
@@ -363,6 +391,9 @@ void Menu::MainMenu() {
 
             }
             break;
+        case 7:
+            clearScreen();
+            SelectGraphMenu();
         case 0:
             exit(0);
         default:
@@ -381,11 +412,12 @@ void Menu::InfoMenu() {
     cout << "\tGraph Information Menu\n";
     cout << "(1) All nodes of a graph\n";
     cout << "(2) Information about a specific node of a graph\n";
-    cout << "(3) Back to the Main Menu\n";
+    cout << "(3) Compare time and distances results of the algorithms\n";
+    cout << "(4) Back to the Main Menu\n";
     cout << "(0) Exit\n";
     cout << " > ";
 
-    int input = getUserInput({0, 1, 2, 3});
+    int input = getUserInput({0, 1, 2, 3, 4});
     switch (input) {
         case 1:
             if (!data.getGraph().getNodes().empty()) {
@@ -498,6 +530,107 @@ void Menu::InfoMenu() {
             }
             break;
         case 3:
+            if (!data.getGraph().getNodes().empty()) {
+                cout << "\n\n";
+                for (int i = 0; i < 43; i++) cout << "-";
+                if (data.getRealGraph()) {
+                    for (int i = 0; i < 30; i++) cout << "-";
+                }
+                cout << "\n";
+                Print("Real Distances", 41, true);
+                if (data.getRealGraph()) {
+                    Print("Haversine Distances", 29, true);
+                }
+                cout << "|\n";
+                for (int i = 0; i < 43; i++) cout << "-";
+                if (data.getRealGraph()) {
+                    for (int i = 0; i < 30; i++) cout << "-";
+                }
+                cout << "\n";
+                Print("Algorithm", 11, true);
+                Print("Time", 14, true);
+                Print("Distance", 14, true);
+                if (data.getRealGraph()) {
+                    Print("Time", 14, true);
+                    Print("Distance", 14, true);
+                }
+                cout << "|\n";
+                for (int i = 0; i < 43; i++) cout << "-";
+                if (data.getRealGraph()) {
+                    for (int i = 0; i < 30; i++) cout << "-";
+                }
+                cout << "\n";
+                Print("Backtrack", 11, true);
+                stringstream tb;
+                tb << fixed << setprecision(6) << data.report.timeBacktrack;
+                Print(tb.str(), 14, true);
+                stringstream db;
+                db << fixed << setprecision(3) << data.report.distBacktrack;
+                Print(db.str(), 14, true);
+                if (data.getRealGraph()) {
+                    stringstream thb;
+                    thb << fixed << setprecision(6) << data.haversineReport.timeBacktrack;
+                    Print(thb.str(), 14, true);
+                    stringstream dhb;
+                    dhb << fixed << setprecision(3) << data.haversineReport.distBacktrack;
+                    Print(dhb.str(), 14, true);
+                }
+                cout << "|\n";
+                Print("MST", 11, true);
+                stringstream tmst;
+                tmst << fixed << setprecision(6) << data.report.timeMST;
+                Print(tmst.str(), 14, true);
+                stringstream dmst;
+                dmst << fixed << setprecision(3) << data.report.distMST;
+                Print(dmst.str(), 14, true);
+                if (data.getRealGraph()) {
+                    stringstream thmst;
+                    thmst << fixed << setprecision(6) << data.haversineReport.timeMST;
+                    Print(thmst.str(), 14, true);
+                    stringstream dhmst;
+                    dhmst << fixed << setprecision(3) << data.haversineReport.distMST;
+                    Print(dhmst.str(), 14, true);
+                }
+                cout << "|\n";
+                Print("MST2", 11, true);
+                stringstream tmst2;
+                tmst2 << fixed << setprecision(6) << data.report.timeMST2;
+                Print(tmst2.str(), 14, true);
+                stringstream dmst2;
+                dmst2 << fixed << setprecision(3) << data.report.distMST2;
+                Print(dmst2.str(), 14, true);
+                if (data.getRealGraph()) {
+                    stringstream thmst2;
+                    thmst2 << fixed << setprecision(6) << data.haversineReport.timeMST2;
+                    Print(thmst2.str(), 14, true);
+                    stringstream dhmst2;
+                    dhmst2 << fixed << setprecision(3) << data.haversineReport.distMST2;
+                    Print(dhmst2.str(), 14, true);
+                }
+                cout << "|\n";
+                Print("NN", 11, true);
+                stringstream tnn;
+                tnn << fixed << setprecision(6) << data.report.timeNearNeighbor;
+                Print(tnn.str(), 14, true);
+                stringstream dnn;
+                dnn << fixed << setprecision(3) << data.report.distNearNeighbor;
+                Print(dnn.str(), 14, true);
+                if (data.getRealGraph()) {
+                    stringstream thnn;
+                    thnn << fixed << setprecision(6) << data.haversineReport.timeNearNeighbor;
+                    Print(thnn.str(), 14, true);
+                    stringstream dhnn;
+                    dhnn << fixed << setprecision(3) << data.haversineReport.distNearNeighbor;
+                    Print(dhnn.str(), 14, true);
+                }
+                cout << "|\n";
+                for (int i = 0; i < 43; i++) cout << "-";
+                if (data.getRealGraph()) {
+                    for (int i = 0; i < 30; i++) cout << "-";
+                }
+            }
+            break;
+        case 4:
             MainMenu();
         case 0:
             exit(0);

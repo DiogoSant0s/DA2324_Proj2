@@ -15,12 +15,6 @@ private:
      */
     Graph graph;
     /**
-     * Struct to store the report of the algorithms
-     */
-    struct Report {
-        double timeBacktrack, timeMST, timeMST2, timeNearNeighbor, timeCristo, distBacktrack, distMST, distMST2, distNearNeighbor, distCristo;
-    };
-    /**
      * Bool used to know if the graph is one of the Real World Graphs
      */
     bool realGraph;
@@ -33,7 +27,14 @@ private:
      */
     bool extraGraph;
 public:
+    /**
+     * Struct to store the report of the algorithms
+     */
+    struct Report {
+        double timeBacktrack, timeMST, timeMST2, timeNearNeighbor, timeCristo, distBacktrack, distMST, distMST2, distNearNeighbor, distCristo;
+    };
     Report report{};
+    Report haversineReport{};
     /**
      * Data class constructor
      * @details Calls the Graph constructor for the graph in this class and initializes all variables
