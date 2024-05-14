@@ -12,6 +12,7 @@
 #include <random>
 #include <unordered_map>
 #include <unordered_set>
+#include "PQ.h"
 
 using namespace std;
 
@@ -71,29 +72,31 @@ private:
          */
         bool visited = false;
         /**
-         * Distance between this node and the src
+         * Distance from the origin node to this node
          */
-        double distanceSrc;
+        double distance = 0;
+        /**
+         * Index of the node in the priority queue
+         */
+        int queueIndex = 0;
+        /**
+         * Edge used to reach this node
+         */
+        Edge* path = nullptr;
+        /**
+         * Operator overload used to compare two nodes
+         * @param node
+         * @return
+         */
+        bool operator<(Node & node) const {
+            return this->distance < node.distance;
+        }
     };
     /**
      * A hash table
      * @details When searching the Time Complexity is O(1)
      */
     unordered_map<int, Node*> nodes;
-    /**
-     * Backtacking function used to discover the shortest Hamiltonion Cycle that exists in a graph, if it exists
-     * @param currentNode Node the function is currently on
-     * @param cycle Integer vector that stores the Id's of the nodes currently in the cycle
-     * @param count Integer used to keep count of how many nodes have been visited
-     * @param distance Double used to keep track of the distance travelled
-     * @param shortestCycle Integer vector that stores the Id's of the nodes currently in the shortestCycle
-     * @param shortestDistance Double used to keep track of the shortestDistance travelled
-     * @details Time Complexity - O(E)
-     * @details E is the number of edges
-     * @return True if the base case has been found
-     * @return False otherwise
-     */
-    bool hamiltonianCycleUtil(Node* currentNode, vector<int>& cycle, int count, double distance, double& shortestDistance, vector<int>& shortestCycle);
     /**
      * Auxiliary function used to convert degrees to radians
      * @param value Value to be converted to radians
@@ -105,10 +108,11 @@ private:
      * Auxiliary function used to determine the distance between to nodes using the Haversine formula
      * @param origin Id of the origin node
      * @param destination Id of the destination node
+     * @param realDistances Boolean used to know if we want the real distances or the Haversine distances
      * @details Time Complexity - O(1)
      * @return Distance between the two nodes
      */
-    double distanceBetweenNodes(int origin, int destination);
+    double distanceBetweenNodes(int origin, int destination, bool realDistances);
 public:
     /**
      * Graph class constructor
@@ -147,66 +151,84 @@ public:
      */
     vector<Edge*> getEdgesOut(int id);
     /**
-     * Function used to determine the total distance travelled in a cycle for the toy and extra graphs
-     * @param path Provided cycle
-     * @details Time Complexity - O(N)
-     * @details N is the size of the vector
-     * @return Distance travelled in the cycle
+     * Function that calls the recursive function to find the shortest path between two nodes
+     * @param shortestDistance The shortest distance travelled
+     * @param shortestCycle The shortest cycle
+     * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @details Time Complexity - O(1)
+     * @return The shortest path between the two nodes
      */
-    double toyAndExtraComputeDistance(vector<int> path);
+    void backtrackingApproach(double &shortestDistance, int *shortestCycle, bool distanceType);
     /**
-     * Funtion used to call the hamiltonianCycleUtil backtracking function after initializing the cycle variable
-     * @details Time Complexity - O(V)
-     * @details V is the number of nodes
-     * @return Integer vector 'cycle' that stores the Id's of the nodes in the Hamiltonian cycle if one was found
-     * @return An empty vector otherwise
-     */
-    vector<int> hamiltonianCycle();
-    /**
-     * Nearest Neighbour Heuristic function to resolve the TSP
-     * @param path Vector that is passed by reference so the function can update it. Contains the path travelled
+     * Finds the shortest path between two nodes using a backtracking algorithm recursively
+     * @param distance The current distance travelled
+     * @param shortestDistance The shortest distance travelled
+     * @param currentIndex The current node's index
+     * @param n The number of nodes
+     * @param cycle The current cycle
+     * @param shortestCycle The shortest cycle
+     * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
      * @details Time Complexity - O(V^2)
      * @details V is the number of nodes
-     * @return Total distance travelled in the path
+     * @return The shortest path between the two nodes
      */
-    double triangularApproximationHeur(vector<int> &path);
-    /**
-     * Triangular Approximation Heuristic function to resolve the TSP in the Toy graphs
-     * @param path Vector that is passed by reference so the function can update it. Contains the path travelled
-     * @details Time Complexity - O(V^2 * E^2)
-     * @details V is the number of nodes and E is the number of edges
-     * @return Total distance travelled in the path
-     */
-    double triangularApproximationHeurToy(vector<int> &path);
-    /**
-     * Self-Organizing System based Ant Colony Optimization function to resolve the TSP
-     * @param iterations The number of iterations or generations of the SOS-ACO algorithm
-     * @param numAnts The number of ants used in each iteration of the ACO algorithm
-     * @param alpha The alpha parameter controls the influence of the pheromone levels on the ant's decision-making process
-     * @param beta The beta parameter controls the influence of the heuristic information (e.g: distance) on the ant's decision-making process
-     * @param evaporationRate The evaporation rate determines the rate at which the pheromone levels evaporate or decay over time
-     * @param realGraph Boolean used to know if the graph we are currently working on is a real graph or not
-     * @details Time Complexity - O(N * I * V^2)
-     * @details V is the number of nodes, N is the numAnts and I is the iterations
-     * @return Integer vector 'uniqueTour' that stores the Id's of the nodes in cycle
-     */
-    vector<int> sosACO(int iterations, int numAnts, double alpha, double beta, double evaporationRate, bool realGraph);
-    /**
-     * Function used to determine the total distance travelled in a cycle
-     * @param visitedNodes Provided cycle
-     * @details Time Complexity - O(N)
-     * @details N is the size of the vector
-     * @return Distance travelled in the cycle
-     */
-    double getTourDistance(vector<int> visitedNodes);
+    void backtrackingApproachRec(double distance, double &shortestDistance, int currentIndex, int n, int cycle[], int shortestCycle[], bool distanceType);
     /**
      * Finds the minimum spanning tree of a graph using Prim's algorithm
-     * @param realGraph Boolean used to know if the graph we are currently working on is a real graph or not
-     * @details Time Complexity - O(V^2)
-     * @details V is the number of nodes
+     * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @param totalDistance The total distance travelled in the MST
+     * @details Time Complexity - O(V * E)
+     * @details V is the number of nodes and E is the number of edges
      * @return The visitedVertices vector that contains the MST
      */
-    vector<int> primMST(bool realGraph);
+    vector<int> primMST(bool distanceType, double &totalDistance);
+    /**
+     * Auxiliar function to Prim's algorithm
+     * @param nodeId The node's id
+     * @param primVisit The vector with all nodes and sorted by prim's algorithm
+     * @param preOrder The vector with all nodes after ordering
+     * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @details Time Complexity - O(V)
+     * @details V is the number of nodes
+     * @return The total distance travelled in the MST
+     */
+    double orderMST(int nodeId, vector<int> &primVisit, vector<int>& preOrder, bool distanceType);
+    /**
+     * Finds the minimum spanning tree of a graph using Prim's algorithm but with a worse 2-approximation algorithm while being faster for larger graphs
+     * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @param totalDistance The total distance travelled in the MST
+     * @details Time Complexity - O(V * E)
+     * @details V is the number of nodes and E is the number of edges
+     * @return The visitedVertices vector that contains the MST
+     */
+    vector<int> primMST2(bool distanceType, double &totalDistance);
+    /**
+     * Auxiliar function to Prim's algorithm but with a worse 2-approximation algorithm while being faster for larger graphs
+     * @param nodeId The node's id
+     * @param primVisit The vector with all nodes and sorted by prim's algorithm
+     * @param preOrder The vector with all nodes after ordering
+     * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @details Time Complexity - O(V)
+     * @details V is the number of nodes
+     * @return The total distance travelled in the MST
+     */
+    double orderMST2(int nodeId, vector<int> &primVisit, vector<int> &preOrder, Graph *mst, bool distanceType);
+    /**
+     * Auxiliar function to perform the order
+     * @param node The current node's id
+     * @param preOrder The vector with all nodes after ordering
+     * @param mst The graph representing the MST after Prim's algorithm
+     * @details Time Complexity - O(E)
+     * @details E is the number of edges
+     */
+    void helper(int node, vector<int> &preOrder, Graph *mst);
+    /**
+     * Nearest Neighbor algorithm to find the shortest path between all nodes
+     * @param totalDistance The total distance travelled
+     * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @return The shortest path between all nodes
+     */
+    vector<int> nearestNeighbor(double &totalDistance, bool distanceType);
 };
 
 #endif //DA2_GRAPH_H

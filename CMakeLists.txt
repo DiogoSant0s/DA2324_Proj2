@@ -14,4 +14,5 @@ add_executable(DA2324_Proj2
         src/Menu.cpp
         src/Menu.h
         main.cpp
+        src/PQ.h
 )

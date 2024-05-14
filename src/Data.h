@@ -15,21 +15,28 @@ private:
      */
     Graph graph;
     /**
+     * Struct to store the report of the algorithms
+     */
+    struct Report {
+        double timeBacktrack, timeMST, timeMST2, timeNearNeighbor, timeCristo, distBacktrack, distMST, distMST2, distNearNeighbor, distCristo;
+    };
+    /**
      * Bool used to know if the graph is one of the Real World Graphs
      */
     bool realGraph;
     /**
      * Bool used to know if the graph is the Tourism Toy Graph, the only graph whose nodes have names
      */
-    bool hasName;
+    bool tourismToyGraph;
     /**
      * Bool used to know if the graph is one of the Extra Fully Connected Graphs
      */
     bool extraGraph;
 public:
+    Report report{};
     /**
      * Data class constructor
-     * @details Calls the Graph constructor for the graph in this class and initializes all bools to false
+     * @details Calls the Graph constructor for the graph in this class and initializes all variables
      */
     Data();
     /**
@@ -58,6 +65,7 @@ public:
      * @return graph
      */
     Graph getGraph();
+
     /**
      * Bool method to get the boolean realGraph
      * @return realGraph
@@ -69,10 +77,10 @@ public:
      */
     bool getExtraGraph() const;
     /**
-     * Bool method to get the boolean hasName
-     * @return hasName
+     * Bool method to get the boolean tourismToyGraph
+     * @return tourismToyGraph
      */
-    bool getHasName() const;
+    bool getTourismToyGraph() const;
 };
 
 #endif //DA2_DATA_H

@@ -3,16 +3,8 @@
 Graph::Graph() = default;
 
 void Graph::addNode(int id, double lon, double lat) {
-    bool unique = true;
-    if (!nodes.empty()) {
-        for (auto node : nodes) {
-            if (node.first == id) {
-                unique = false;
-            }
-        }
-    }
-    if (unique) {
-        nodes.insert({id, new Node{id, lat, lon}});
+    if (nodes.find(id) == nodes.end()) {
+        nodes.insert({id, new Node{id, lon, lat}});
     }
 }
 
@@ -38,306 +30,204 @@ double Graph::convertToRad(double value) {
     return value * (M_PI / 180);
 }
 
-double Graph::distanceBetweenNodes(int origin, int destination) {
-    double a = pow(sin(convertToRad(nodes[destination]->latitude - nodes[origin]->latitude) / 2), 2) + cos(convertToRad(nodes[origin]->latitude)) *
-            cos(convertToRad(nodes[destination]->latitude)) * pow(sin(convertToRad(nodes[destination]->longitude - nodes[origin]->longitude) / 2), 2);
-    return 2 * atan2(sqrt(a), sqrt(1 - a)) * 6371;
-}
-
-double Graph::getTourDistance(vector<int> visitedNodes) {
-    double totalDistance = 0;
-    for (int i = 0; i < visitedNodes.size() - 1; ++i) {
-        totalDistance += distanceBetweenNodes(visitedNodes[i],visitedNodes[i + 1]);
+double Graph::distanceBetweenNodes(int origin, int destination, bool realDistances) {
+    if (origin == destination) {
+        return 0;
     }
-    return totalDistance;
-}
-
-double Graph::toyAndExtraComputeDistance(vector<int> path) {
-    double totalDistance = 0.0;
-    for (int i = 0; i < path.size() - 1; ++i) {
-        for (Edge* edge : nodes.find(path[i])->second->edgesOut) {
-            if (edge->dest == path[i + 1]) {
-                totalDistance += edge->distance;
-                break;
+    if (realDistances) {
+        for (Edge* edge : nodes.find(origin)->second->edgesOut) {
+            if (edge->dest == destination) {
+                return edge->distance;
             }
         }
     }
-    return totalDistance;
+    return 6371 * 2 * asin(sqrt(pow(sin(convertToRad(nodes[destination]->latitude - nodes[origin]->latitude) / 2), 2) +
+        pow(sin(convertToRad(nodes[destination]->longitude - nodes[origin]->longitude)/ 2), 2) *
+        cos(convertToRad(nodes[origin]->latitude)) *
+        cos(convertToRad(nodes[destination]->latitude))));
 }
 
-vector<int> Graph::hamiltonianCycle() {
-    for (auto node : nodes) {
-        node.second->visited = false;
-        node.second->distanceSrc = numeric_limits<double>::max();
-    }
-    vector<int> cycle;
-    cycle.push_back(nodes[0]->Id);
-    nodes[0]->visited = true;
-    nodes[0]->distanceSrc = 0;
-    vector<int> shortestCycle;
-    double shortestDistance = numeric_limits<double>::max();
-    if (hamiltonianCycleUtil(nodes[0], cycle, 1, 0, shortestDistance, shortestCycle)) {
-        shortestCycle.push_back(nodes[0]->Id);
-        nodes[0]->distanceSrc = shortestDistance;
-        return shortestCycle;
-    }
-    return {};
+void Graph::backtrackingApproach(double &shortestDistance, int *shortestCycle, bool distanceType) {
+    int cycle[nodes.size()];
+    cycle[0] = 0;
+    nodes.find(0)->second->visited = true;
+    backtrackingApproachRec(0, shortestDistance, 1, (int) nodes.size(), cycle, shortestCycle, distanceType);
 }
 
-bool Graph::hamiltonianCycleUtil(Node* currentNode, vector<int>& cycle, int count, double distance, double& shortestDistance, vector<int>& shortestCycle) {
-    if (count == nodes.size() && !currentNode->edgesOut.empty() && currentNode->edgesOut[0]->dest == 0) {
-        distance += currentNode->edgesOut[0]->distance;
-        currentNode->distanceSrc = distance;
+void Graph::backtrackingApproachRec(double distance, double &shortestDistance, int currentIndex, int n, int cycle[], int shortestCycle[], bool distanceType) {
+    if (currentIndex == n) {
+        distance += distanceBetweenNodes(cycle[currentIndex - 1], cycle[0], distanceType);
         if (distance < shortestDistance) {
             shortestDistance = distance;
-            shortestCycle = cycle;
-            return true;
-        }
-        return false;
-    }
-    bool foundShorterCycle = false;
-    for (Edge* edge : currentNode->edgesOut) {
-        Node* nextNode = nodes[edge->dest];
-        if (!nextNode->visited) {
-            nextNode->visited = true;
-            cycle.push_back(nextNode->Id);
-            if (distance + edge->distance < shortestDistance) {
-                foundShorterCycle = hamiltonianCycleUtil(nextNode, cycle, count + 1, distance + edge->distance, shortestDistance, shortestCycle);
-                if (foundShorterCycle)
-                    break;
+            for (unsigned i = 0; i < n; i++) {
+                shortestCycle[i] = cycle[i];
             }
-            nextNode->visited = false;
-            cycle.pop_back();
+        }
+    } else {
+        for (int i = 0; i < n; i++) {
+            if (!(nodes.find(i)->second->visited)) {
+                if (distance + distanceBetweenNodes(cycle[currentIndex - 1], i, distanceType) < shortestDistance) {
+                    cycle[currentIndex] = i;
+                    nodes.find(i)->second->visited = true;
+                    backtrackingApproachRec(distance + distanceBetweenNodes(cycle[currentIndex - 1], i, distanceType), shortestDistance, currentIndex + 1, n, cycle,shortestCycle, distanceType);
+                    nodes.find(i)->second->visited = false;
+                }
+            }
         }
     }
-    return foundShorterCycle;
 }
 
-double Graph::triangularApproximationHeur(vector<int> &path) {
-    for (auto node : nodes) {
-        node.second->visited = false;
-        node.second->distanceSrc = 0;
+vector<int> Graph::primMST(bool distanceType, double &totalDistance) {
+    MutablePriorityQueue<Node> queue;
+    vector<int> prim;
+    vector<int> preOrder;
+    for (auto& pair : nodes) {
+        pair.second->visited = false;
+        pair.second->distance = numeric_limits<double>::infinity();
+        queue.insert(pair.second);
     }
-    vector<vector<double>> distances(nodes.size(), vector<double>(nodes.size(), 0.0));
-    for (auto node : nodes) {
-        for (Edge* edge : node.second->edgesOut) {
-            int origin = edge->origin;
-            int destination = edge->dest;
-            double distance = distanceBetweenNodes(origin, destination);
-            distances[origin][destination] = distance;
-            distances[destination][origin] = distance;
-        }
-    }
-    double totalDistance = 0;
-    int current_node_id = 0;
-    nodes.find(current_node_id)->second->visited = true;
-    path.push_back(current_node_id);
-    for (int i = 0; i < nodes.size() - 1; i++) {
-        int nearestNeighbor = -1;
-        double minDistance = INT_MAX;
-        for (int next = 0; next < nodes.size(); next++) {
-            if (!nodes.find(next)->second->visited) {
-                double lowerBound = distances[current_node_id][next] + distances[next][0];
-                if (lowerBound < minDistance) {
-                    minDistance = lowerBound;
-                    nearestNeighbor = next;
-                }
+    nodes.find(0)->second->distance = 0;
+    nodes.find(0)->second->path = nullptr;
+    nodes.find(0)->second->visited = true;
+    queue.decreaseKey(nodes.find(0)->second);
+    while (!queue.empty()) {
+        Node* origin = queue.extractMin();
+        prim.push_back(origin->Id);
+        for (auto edge : origin->edgesOut) {
+            if (!(nodes.find(edge->dest)->second->visited) && edge->distance < nodes.find(edge->dest)->second->distance) {
+                nodes.find(edge->dest)->second->distance = edge->distance;
+                nodes.find(edge->dest)->second->path = edge;
+                queue.decreaseKey(nodes.find(edge->dest)->second);
             }
         }
-        current_node_id = nearestNeighbor;
-        nodes.find(current_node_id)->second->visited = true;
-        path.push_back(current_node_id);
-        totalDistance += minDistance;
+        nodes.find(origin->Id)->second->visited = true;
     }
-    path.push_back(0);
-    totalDistance += distances[current_node_id][0];
-    return totalDistance;
+    for (auto& pair : nodes){
+        pair.second->visited = false;
+    }
+    totalDistance = orderMST(0, prim, preOrder, distanceType);
+    return preOrder;
 }
 
-double Graph::triangularApproximationHeurToy(vector<int> &path) {
-    for (auto& node : nodes) {
-        node.second->visited = false;
-        node.second->distanceSrc = 0;
-    }
-    double totalDistance = 0;
-    double lowerBound = 0;
-    int current_node_id = 0;
-    nodes.find(current_node_id)->second->visited = true;
-    path.push_back(current_node_id);
-    for (int i = 0; i < nodes.size() - 1; i++) {
-        int nearestNeighbor = -1;
-        double minDistance = INT_MAX;
-        for (int next = 0; next < nodes.size(); next++) {
-            if (!nodes.find(next)->second->visited) {
-                for (auto &e: nodes.find(current_node_id)->second->edgesOut) {
-                    if (e->dest == next) {
-                        lowerBound = e->distance;
-                        for (Edge* edge: nodes.find(next)->second->edgesOut) {
-                            if (edge->dest == 0) {
-                                lowerBound += edge->distance;
-                            }
-                        }
-                    }
-                }
-                if (lowerBound < minDistance) {
-                    minDistance = lowerBound;
-                    nearestNeighbor = next;
-                }
-            }
-        }
-        current_node_id = nearestNeighbor;
-        nodes.find(current_node_id)->second->visited = true;
-        path.push_back(current_node_id);
-        totalDistance += minDistance;
-    }
-    path.push_back(0);
-    for (Edge* edges: nodes.find(current_node_id)->second->edgesOut) {
-        if (edges->dest == 0) {
-            totalDistance += edges->distance;
+double Graph::orderMST(int nodeId, vector<int>& primVisit, vector<int>& preOrder, bool distanceType) {
+    nodes.find(nodeId)->second->visited = true;
+    preOrder.push_back(nodeId);
+    for (int i = 0; i < primVisit.size(); i++) {
+        auto node= nodes.find(primVisit[i])->second;
+        if (node->path != nullptr && node->path->origin == nodeId && !node->visited) {
+            orderMST(primVisit[i], primVisit, preOrder, distanceType);
         }
     }
-    return totalDistance;
+    double totalCost = 0.0;
+    if (nodes.find(nodeId)->second->path == nullptr) {
+        preOrder.emplace_back(0);
+        for (int i = 0; i < preOrder.size() - 1; i++) {
+            totalCost += distanceBetweenNodes(preOrder[i], preOrder[i + 1], distanceType);
+        }
+    }
+    return totalCost;
 }
 
-vector<int> Graph::sosACO(int iterations, int numAnts, double alpha, double beta, double evaporationRate, bool realGraph) {
-    int numNodes = static_cast<int>(nodes.size());
-    vector<vector<double>> distances(numNodes, vector<double>(numNodes, 0.0));
-    for (auto& node : nodes) {
-        for (Edge* edge : node.second->edgesOut) {
-            int origin = edge->origin;
-            int destination = edge->dest;
-            double distance = distanceBetweenNodes(origin, destination);
-            distances[origin][destination] = distance;
-            distances[destination][origin] = distance;
+vector<int> Graph::primMST2(bool distanceType, double& totalDistance) {
+    auto* mst = new Graph();
+    MutablePriorityQueue<Node> queue;
+    vector<int> prim;
+    vector<int> preOrder;
+    for (auto pair : nodes) {
+        pair.second->visited = false;
+        pair.second->distance = numeric_limits<double>::infinity();
+        queue.insert(pair.second);
+    }
+    nodes.find(0)->second->distance = 0;
+    nodes.find(0)->second->path = nullptr;
+    nodes.find(0)->second->visited = true;
+    queue.decreaseKey(nodes.find(0)->second);
+    while (!queue.empty()) {
+        Node* origin = queue.extractMin();
+        prim.push_back(origin->Id);
+        for (auto edge : origin->edgesOut) {
+            if (!nodes.find(edge->dest)->second->visited && edge->distance < nodes.find(edge->dest)->second->distance) {
+                nodes.find(edge->dest)->second->distance = edge->dest;
+                nodes.find(edge->dest)->second->path = edge;
+                queue.decreaseKey(nodes.find(edge->dest)->second);
+            }
+        }
+        nodes.find(origin->Id)->second->visited = true;
+    }
+    for (auto pair : nodes) {
+        pair.second->visited = false;
+    }
+    for (auto pair : nodes) {
+        auto path = pair.second->path;
+        if (path!= nullptr) {
+            if (mst->nodes.find(path->origin) == mst->nodes.end()) {
+                Node* node = nodes.find(path->origin)->second;
+                mst->nodes.emplace(node->Id, node);
+            }
+            if (mst->nodes.find(path->dest) == mst->nodes.end()) {
+                Node* node = nodes.find(path->dest)->second;
+                mst->nodes.emplace(node->Id, node);
+            }
+            mst->nodes.find(path->origin)->second->edgesOut.push_back(path);
         }
     }
-    random_device rd;
-    mt19937 rng(rd());
-    uniform_real_distribution<double> distribution(0.0, 1.0);
+    totalDistance = orderMST2(0, prim, preOrder, mst, distanceType);
+    return preOrder;
+}
 
-    vector<vector<double>> pheromones(numNodes, vector<double>(numNodes, 0.01));
-    vector<int> bestTour;
-    double bestTourLength;
-    vector<bool> visited(numNodes, false);
-    vector<double> probabilities(numNodes, 0.0);
-
-    for (int iter = 0; iter < iterations; ++iter) {
-        vector<vector<int>> antTours(numAnts);
-        for (int ant = 0; ant < numAnts; ++ant) {
-            int currentNode = 0;
-            for (int i = 0; i < numNodes - 1; ++i) {
-                visited[currentNode] = true;
-                antTours[ant].push_back(currentNode);
-                double totalProb = 0.0;
-                int nextNode = 0;
-                double minProbability = numeric_limits<double>::max();
-                for (int j = 0; j < numNodes; ++j) {
-                    if (!visited[j]) {
-                        double probability = pow(pheromones[currentNode][j], alpha) * pow(1.0 / distances[currentNode][j], beta);
-                        probabilities[j] = probability;
-                        totalProb += probability;
-                        if (probability < minProbability) {
-                            minProbability = probability;
-                            nextNode = j;
-                        }
-                    }
-                }
-                double roulette = distribution(rng) * totalProb;
-                double cumProb = 0.0;
-                for (int j = 0; j < numNodes; ++j) {
-                    if (!visited[j]) {
-                        cumProb += probabilities[j];
-                        if (cumProb >= roulette) {
-                            nextNode = j;
-                            break;
-                        }
-                    }
-                }
-                currentNode = nextNode;
-            }
-            antTours[ant].push_back(currentNode);
-        }
-        for (int i = 0; i < numNodes; ++i) {
-            for (int j = 0; j < numNodes; ++j) {
-                pheromones[i][j] *= (1.0 - evaporationRate);
-            }
-        }
-        vector<int> tour;
-        for (int ant = 0; ant < numAnts; ++ant) {
-            tour = antTours[ant];
-            double tourLength;
-            if (realGraph) {
-                tourLength = getTourDistance(tour);
-            } else {
-                tourLength = toyAndExtraComputeDistance(tour);
-            }
-            for (int i = 0; i < numNodes - 1; ++i) {
-                int node1 = tour[i];
-                int node2 = tour[i + 1];
-                pheromones[node1][node2] += (1.0 / tourLength);
-                pheromones[node2][node1] += (1.0 / tourLength);
-            }
-            if (tourLength < bestTourLength) {
-                bestTour = tour;
-                bestTourLength = tourLength;
-            }
+void Graph::helper(int node, vector<int>& preOrder, Graph* mst) {
+    mst->nodes.find(node)->second->visited = true;
+    preOrder.push_back(node);
+    for (auto segment : mst->nodes.find(node)->second->edgesOut) {
+        if (!mst->nodes.find(segment->dest)->second->visited) {
+            helper(segment->dest, preOrder, mst);
         }
     }
-    bestTour.push_back(bestTour[0]);
-    vector<int> uniqueTour;
+}
+
+double Graph::orderMST2(int nodeId, vector<int>& primVisit, vector<int>& preOrder, Graph* mst, bool distanceType) {
+    mst->nodes.find(nodeId)->second->visited = true;
+    preOrder.push_back(nodeId);
+    for (int i : primVisit) {
+        if (!mst->nodes.find(i)->second->visited) {
+            helper(i, preOrder, mst);
+        }
+    }
+    double totalCost = 0.0;
+    if (nodes.find(nodeId)->second->path == nullptr) {
+        preOrder.emplace_back(0);
+        for (int i = 0; i < preOrder.size() - 1; i++) {
+            totalCost += distanceBetweenNodes(preOrder[i], preOrder[i + 1], distanceType);
+        }
+    }
+    return totalCost;
+}
+
+vector<int> Graph::nearestNeighbor(double& totalDistance, bool distanceType) {
+    vector<int> path;
     unordered_set<int> visitedNodes;
-    for (int node : bestTour) {
-        if (visitedNodes.find(node) == visitedNodes.end()) {
-            uniqueTour.push_back(node);
-            visitedNodes.insert(node);
-        }
-    }
-    for (auto& node : nodes) {
-        if (visitedNodes.find(node.first) == visitedNodes.end()) {
-            uniqueTour.push_back(node.first);
-        }
-    }
-    uniqueTour.push_back(nodes[0]->Id);
-    return uniqueTour;
-}
-
-vector<int> Graph::primMST(bool realGraph) {
-    int numNodes = (int) nodes.size();
-    vector<int> key(numNodes, INT_MAX);
-    vector<int> parent(numNodes, -1);
-    vector<bool> inMST(numNodes, false);
-    key[0] = 0;
-    for (int count = 0; count < numNodes - 1; ++count) {
-        int minKey = INT_MAX;
-        int u;
-        for (int v = 0; v < numNodes; ++v) {
-            if (!inMST[v] && key[v] < minKey) {
-                minKey = key[v];
-                u = v;
-            }
-        }
-        inMST[u] = true;
-        for (int v = 0; v < numNodes; ++v) {
-            int weight = INT_MAX;
-            if (realGraph) {
-                weight = (int) distanceBetweenNodes(u,v);
-            } else {
-                for (Edge* edge : nodes.find(u)->second->edgesOut) {
-                    if (edge->dest == v) {
-                        weight = (int) edge->distance;
-                    }
+    int currentNode = nodes.find(0)->first;
+    visitedNodes.insert(currentNode);
+    path.push_back(currentNode);
+    while (path.size() < nodes.size()) {
+        double minDistance = numeric_limits<double>::infinity();
+        int closestNode = -1;
+        for (auto nodePair : nodes) {
+            if (visitedNodes.find(nodePair.first) == visitedNodes.end()) {
+                double distance = distanceBetweenNodes(currentNode, nodePair.first, distanceType);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestNode = nodePair.first;
                 }
             }
-            if (weight && !inMST[v] && key[v] > weight) {
-                key[v] = weight;
-                parent[v] = u;
-            }
         }
+        currentNode = closestNode;
+        visitedNodes.insert(currentNode);
+        path.push_back(currentNode);
     }
-    vector<int> visitedNodes;
-    for (int i = 1; i < numNodes; ++i) {
-        visitedNodes.push_back(parent[i]);
-        visitedNodes.push_back(i);
+    path.push_back(nodes.find(0)->first);
+    for (int i = 0; i < path.size() - 1; i++) {
+        totalDistance += distanceBetweenNodes(path[i], path[i + 1], distanceType);
     }
-    return visitedNodes;
+    return path;
 }

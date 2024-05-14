@@ -2,6 +2,8 @@
 #define DA2_MENU_H
 
 #include <iomanip>
+#include <bits/stdc++.h>
+#include <sys/time.h>
 #include "Data.h"
 
 /**
@@ -39,11 +41,11 @@ public:
     /**
      * Void method that outputs a string in a table block or in a path
      * @details Complexity: O(1)
-     * @param s String to print
+     * @param s String to Print
      * @param length Space given to the string in the table
      * @param tableOrPath Bool used to determine if we're printing a Table or a Path
      */
-    static void print(const string &s, int length, bool tableOrPath);
+    static void Print(const string &s, int length, bool tableOrPath);
     /**
      * Void method used to choose which graph to read from the datasets
      * @details Complexity: O(1)
@@ -59,6 +61,8 @@ public:
      * @details Complexity: O(1)
      */
     void InfoMenu();
+
+    static double printElapsedTime(timeval start, timeval end);
 };
 
 #endif //DA2_MENU_H

@@ -1,11 +1,13 @@
 #include "Data.h"
 
-Data::Data() : graph(Graph()), realGraph(false), hasName(false), extraGraph(false) {}
+Data::Data() : graph(Graph()), realGraph(false), tourismToyGraph(false), extraGraph(false) {
+    report = {0, 0, 0, 0,0,0,0,0, 0, 0};
+}
 
 Graph Data::getGraph() {return graph;}
 bool Data::getRealGraph() const {return realGraph;}
 bool Data::getExtraGraph() const {return extraGraph;}
-bool Data::getHasName() const {return hasName;}
+bool Data::getTourismToyGraph() const {return tourismToyGraph;}
 
 void Data::readRealGraphs(int graphNumber) {
     realGraph = true;
@@ -24,11 +26,7 @@ void Data::readRealGraphs(int graphNumber) {
         getline(input, Longitude, ',');
         getline(input, Latitude, '\r');
 
-        int id = stoi(Id);
-        double longitude = stod(Longitude);
-        double latitude = stod(Latitude);
-
-        graph.addNode(id, longitude, latitude);
+        graph.addNode(stoi(Id), stod(Longitude), stod(Latitude));
     }
     while (getline(edges, textLine)) {
         stringstream input(textLine);
@@ -38,11 +36,7 @@ void Data::readRealGraphs(int graphNumber) {
         getline(input, Destination, ',');
         getline(input, Distance, '\r');
 
-        int origin = stoi(Origin);
-        int dest = stoi(Destination);
-        float distance = stof(Distance);
-
-        graph.addEdge(origin, dest, distance, Distance);
+        graph.addEdge(stoi(Origin), stoi(Destination), stof(Distance), Distance);
     }
 }
 
@@ -54,7 +48,7 @@ void Data::readToyGraphs(const string& graphName) {
     string Origin, Destination, Distance;
 
     if (graphName == "tourism") {
-        hasName = true;
+        tourismToyGraph = true;
         while (getline(edges, textLine)) {
             stringstream input(textLine);
             string OriginName, DestinationName;
@@ -65,16 +59,12 @@ void Data::readToyGraphs(const string& graphName) {
             getline(input, OriginName, ',');
             getline(input, DestinationName, '\r');
 
-            int origin = stoi(Origin);
-            int dest = stoi(Destination);
-            float distance = stof(Distance);
+            graph.addNode(stoi(Origin), 0, 0);
+            graph.addNode(stoi(Destination), 0, 0);
+            graph.addEdge(stoi(Origin), stoi(Destination), stof(Distance), Distance);
 
-            graph.addNode(origin, 0, 0);
-            graph.addNode(dest, 0, 0);
-            graph.addEdge(origin, dest, distance, Distance);
-
-            graph.getNodes().find(origin)->second->name = OriginName;
-            graph.getNodes().find(dest)->second->name = DestinationName;
+            graph.getNodes().find(stoi(Origin))->second->name = OriginName;
+            graph.getNodes().find(stoi(Destination))->second->name = DestinationName;
         }
     } else {
         while (getline(edges, textLine)) {
@@ -84,13 +74,9 @@ void Data::readToyGraphs(const string& graphName) {
             getline(input, Destination, ',');
             getline(input, Distance, '\r');
 
-            int origin = stoi(Origin);
-            int dest = stoi(Destination);
-            float distance = stof(Distance);
-
-            graph.addNode(origin, 0, 0);
-            graph.addNode(dest, 0, 0);
-            graph.addEdge(origin, dest, distance, Distance);
+            graph.addNode(stoi(Origin), 0, 0);
+            graph.addNode(stoi(Destination), 0, 0);
+            graph.addEdge(stoi(Origin), stoi(Destination), stof(Distance), Distance);
         }
     }
 }
@@ -110,12 +96,8 @@ void Data::readExtraGraphs(int graphNumber) {
         getline(input, Destination, ',');
         getline(input, Distance, '\r');
 
-        int origin = stoi(Origin);
-        int dest = stoi(Destination);
-        float distance = stof(Distance);
-
-        graph.addNode(origin, 0, 0);
-        graph.addNode(dest, 0, 0);
-        graph.addEdge(origin, dest, distance, Distance);
+        graph.addNode(stoi(Origin), 0, 0);
+        graph.addNode(stoi(Destination), 0, 0);
+        graph.addEdge(stoi(Origin), stoi(Destination), stof(Distance), Distance);
     }
 }
