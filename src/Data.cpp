@@ -1,8 +1,9 @@
 #include "Data.h"
 
 Data::Data() : graph(Graph()), realGraph(false), tourismToyGraph(false), extraGraph(false) {
-    report = {0, 0, 0, 0,0,0,0,0, 0, 0};
-    haversineReport = {0, 0, 0, 0,0,0,0,0, 0, 0};
+    double max = std::numeric_limits<double>::infinity();
+    report = {max, max, max, max, max, max, max, max, max, max};
+    haversineReport = {max, max, max, max, max, max, max, max, max, max};
 }
 
 Graph Data::getGraph() {

@@ -1,15 +1,12 @@
 #ifndef DA2_GRAPH_H
 #define DA2_GRAPH_H
 
-#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
 #include <queue>
-#include <algorithm>
 #include <limits>
 #include <cmath>
-#include <random>
 #include <unordered_map>
 #include <unordered_set>
 #include "PQ.h"
@@ -113,14 +110,6 @@ private:
      * @return Distance between the two nodes
      */
     double distanceBetweenNodes(int origin, int destination, bool realDistances);
-
-    double computeTourDistance(const vector<int> &tour, bool graphType);
-
-    static vector<int> selection(const vector<vector<int>> &population, const vector<pair<int, double>> &fitnessScores);
-
-    static vector<int> crossover(const vector<int> &parent1, const vector<int> &parent2);
-
-    static void mutation(vector<int> &tour);
 public:
     /**
      * Graph class constructor
@@ -159,7 +148,7 @@ public:
      */
     vector<Edge*> getEdgesOut(int id);
     /**
-     * Function that calls the recursive function to find the shortest path between two nodes
+     * Function that calls the recursive function to find the shortest path between two nodes using a backtracking algorithm
      * @param shortestDistance The shortest distance travelled
      * @param shortestCycle The shortest cycle
      * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
@@ -236,13 +225,24 @@ public:
      * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
      * @return The shortest path between all nodes
      */
-    vector<int> nearestNeighbor(double &totalDistance, bool distanceType);
-
-    vector<int> geneticAlgorithm(int populationSize, int numGenerations, bool graphType, double &totalDistance);
-
-    void initializePopulation(vector<vector<int>> &population);
-
-    void evaluatePopulation(const vector<vector<int>> &population, vector<pair<int, double>> &fitnessScores, bool graphType);
+    vector<int> nearestNeighbor(int startNode, double &totalDistance, bool distanceType);
+    /**
+     * Function that calls the recursive function to find the shortest path between all nodes using a minimum distance algorithm
+     * @param path The shortest path between all nodes
+     * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @return The total distance travelled
+     */
+    double minimumDistance(vector<int> &path, bool distanceType);
+    /**
+     * Minimum distance recursive algorithm to find the shortest path between all nodes recursively
+     * @param node The current node
+     * @param distance The current distance travelled
+     * @param path The shortest path between all nodes
+     * @param count The number of nodes visited
+     * @param valid Boolean used to know if the path is valid
+     * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     */
+    void minimumDistanceRec(Node *node, double &distance, vector<int> &path, unsigned int count, bool &valid, bool distanceType);
 };
 
 #endif //DA2_GRAPH_H

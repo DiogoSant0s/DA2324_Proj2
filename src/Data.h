@@ -31,7 +31,7 @@ public:
      * Struct to store the results of the algorithms
      */
     struct Report {
-        double timeBacktrack, timeMST, timeMST2, timeNearNeighbor, timeCristo, distBacktrack, distMST, distMST2, distNearNeighbor, distCristo;
+        double timeBacktrack, timeMST, timeMST2, timeNearNeighbor, timeGenetic, distBacktrack, distMST, distMST2, distNearNeighbor, distGenetic;
     };
     /**
      * Normal report

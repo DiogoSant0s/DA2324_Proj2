@@ -54,6 +54,11 @@ public:
      */
     static double printElapsedTime(timeval start, timeval end);
     /**
+     * Void method that prints the report values if they are valid or N/A if they are not
+     * @details Time Complexity - O(1)
+     */
+    static void checkReportValues(stringstream &i, int precision, double value);
+    /**
      * Void method used to choose which graph to read from the datasets
      * @details Time Complexity - O(1)
      */

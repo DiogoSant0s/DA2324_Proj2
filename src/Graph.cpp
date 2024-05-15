@@ -1,7 +1,5 @@
 #include "Graph.h"
 
-#include <random>
-
 Graph::Graph() = default;
 
 void Graph::addNode(int id, double lon, double lat) {
@@ -29,16 +27,7 @@ vector<Graph::Edge*> Graph::getEdgesOut(int id) {
 }
 
 double Graph::convertToRad(double value) {
-    return value * (M_PI / 180);
-}
-
-double Graph::computeTourDistance(const vector<int>& tour, bool graphType) {
-    double totalDistance = 0.0;
-    for (int i = 0; i < tour.size() - 1; ++i) {
-        totalDistance += distanceBetweenNodes(tour[i], tour[i + 1], graphType);
-    }
-    totalDistance += distanceBetweenNodes(tour.back(), tour.front(), graphType);
-    return totalDistance;
+    return value * M_PI / 180;
 }
 
 double Graph::distanceBetweenNodes(int origin, int destination, bool realDistances) {
@@ -52,13 +41,15 @@ double Graph::distanceBetweenNodes(int origin, int destination, bool realDistanc
             }
         }
     }
-    return 6371 * 2 * asin(sqrt(pow(sin(convertToRad(nodes[destination]->latitude - nodes[origin]->latitude) / 2), 2) +
-        pow(sin(convertToRad(nodes[destination]->longitude - nodes[origin]->longitude)/ 2), 2) *
-        cos(convertToRad(nodes[origin]->latitude)) *
-        cos(convertToRad(nodes[destination]->latitude))));
+    double aux = pow(sin(convertToRad(nodes[destination]->latitude - nodes[origin]->latitude) / 2), 2) + cos(convertToRad(nodes[origin]->latitude)) *
+            cos(convertToRad(nodes[destination]->latitude)) * pow(sin(convertToRad(nodes[destination]->longitude - nodes[origin]->longitude) / 2), 2);
+    return 6371 * 2.0 * atan2(sqrt(aux), sqrt(1.0 - aux));
 }
 
 void Graph::backtrackingApproach(double &shortestDistance, int *shortestCycle, bool distanceType) {
+    for (auto& pair : nodes) {
+        pair.second->visited = false;
+    }
     int cycle[nodes.size()];
     cycle[0] = 0;
     nodes.find(0)->second->visited = true;
@@ -214,10 +205,10 @@ double Graph::orderMST2(int nodeId, vector<int>& primVisit, vector<int>& preOrde
     return totalCost;
 }
 
-vector<int> Graph::nearestNeighbor(double& totalDistance, bool distanceType) {
+vector<int> Graph::nearestNeighbor(int startNode, double &totalDistance, bool distanceType) {
     vector<int> path;
     unordered_set<int> visitedNodes;
-    int currentNode = nodes.find(0)->first;
+    int currentNode = startNode;
     visitedNodes.insert(currentNode);
     path.push_back(currentNode);
     while (path.size() < nodes.size()) {
@@ -236,102 +227,54 @@ vector<int> Graph::nearestNeighbor(double& totalDistance, bool distanceType) {
         visitedNodes.insert(currentNode);
         path.push_back(currentNode);
     }
-    path.push_back(nodes.find(0)->first);
+    path.push_back(startNode);
     for (int i = 0; i < path.size() - 1; i++) {
         totalDistance += distanceBetweenNodes(path[i], path[i + 1], distanceType);
     }
     return path;
 }
 
-// Initialize population with random tours
-void Graph::initializePopulation(vector<vector<int>>& population) {
-    for (auto& tour : population) {
-        vector<int> nodesIds;
-        for (const auto& pair : nodes) {
-            nodesIds.push_back(pair.first);
+void Graph::minimumDistanceRec(Node *node, double& distance, vector<int> &path, unsigned int count, bool& valid, bool distanceType) {
+    if (!valid) return;
+    double minDist = numeric_limits<double>::infinity();
+    Edge* e = nullptr;
+    for (auto edge : node->edgesOut) {
+        if (count == nodes.size() - 1) {
+            if (edge->dest == 0) {
+                distance += distanceBetweenNodes(node->Id, edge->dest, distanceType);
+                return;
+            }
         }
-        shuffle(nodesIds.begin(), nodesIds.end(), std::mt19937(std::random_device()()));
-        tour = nodesIds;
-    }
-}
-
-// Evaluate fitness of each tour in the population
-void Graph::evaluatePopulation(const vector<vector<int>>& population, vector<pair<int, double>>& fitnessScores, bool graphType) {
-    for (int i = 0; i < population.size(); ++i) {
-        double distance = computeTourDistance(population[i], graphType);
-        fitnessScores.emplace_back(i, distance);
-    }
-    sort(fitnessScores.begin(), fitnessScores.end(), [](const auto& a, const auto& b) {
-        return a.second < b.second;
-    });
-}
-
-// Perform tournament selection to select parents
-vector<int> Graph::selection(const vector<vector<int>>& population, const vector<pair<int, double>>& fitnessScores) {
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dist(0, (int) population.size() / 2 - 1);
-    int idx1 = dist(gen);
-    int idx2 = dist(gen);
-    return (fitnessScores[idx1].second < fitnessScores[idx2].second) ? population[fitnessScores[idx1].first] : population[fitnessScores[idx2].first];
-}
-
-// Perform partially matched crossover
-vector<int> Graph::crossover(const vector<int>& parent1, const vector<int>& parent2) {
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dist(0, (int) parent1.size() - 1);
-    int startPos = dist(gen);
-    int endPos = dist(gen);
-    vector<int> child(parent1.size(), -1);
-    for (int i = startPos; i <= endPos; ++i) {
-        child[i] = parent1[i];
-    }
-    for (int i : parent2) {
-        if (find(child.begin(), child.end(), i) == child.end()) {
-            for (int & j : child) {
-                if (j == -1) {
-                    j = i;
-                    break;
-                }
+        else {
+            double edgeDistance = distanceBetweenNodes(node->Id, edge->dest, distanceType);
+            if (edgeDistance < minDist && !nodes.find(edge->dest)->second->visited) {
+                minDist = edgeDistance;
+                e = edge;
             }
         }
     }
-    return child;
+    if (!e) {
+        valid = false;
+        minimumDistanceRec(nullptr, distance, path, count + 1, valid, distanceType);
+    }
+    else {
+        nodes.find(e->dest)->second->visited = true;
+        path.push_back(e->dest);
+        distance += minDist;
+        minimumDistanceRec(nodes.find(e->dest)->second, distance, path, count + 1, valid, distanceType);
+    }
 }
 
-void Graph::mutation(vector<int>& tour) {
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<int> dist(0, (int) tour.size() - 1);
-    int idx1 = dist(gen);
-    int idx2 = dist(gen);
-    swap(tour[idx1], tour[idx2]);
-}
-
-vector<int> Graph::geneticAlgorithm(int populationSize, int numGenerations, bool graphType, double &totalDistance) {
-    vector<vector<int>> population(populationSize);
-    initializePopulation(population);
-    for (int generation = 0; generation < numGenerations; ++generation) {
-        vector<pair<int, double>> fitnessScores;
-        evaluatePopulation(population, fitnessScores, graphType);
-        vector<vector<int>> newPopulation;
-        for (int i = 0; i < populationSize; ++i) {
-            // Select parents and perform crossover
-            vector<int> offspring = crossover(selection(population, fitnessScores), selection(population, fitnessScores));
-            // Apply mutation to offspring
-            mutation(offspring);
-            newPopulation.push_back(offspring);
-        }
-        population = newPopulation;
+double Graph::minimumDistance(vector<int>& path, bool distanceType) {
+    double distance = 0;
+    unsigned int count = 0;
+    bool validApproximation = true;
+    for (auto& v : nodes) {
+        v.second->visited = false;
     }
-    vector<int> bestTour;
-    for (const auto& tour : population) {
-        double distance = computeTourDistance(tour, graphType);
-        if (distance < totalDistance) {
-            totalDistance = distance;
-            bestTour = tour;
-        }
-    }
-    return bestTour;
+    auto root = nodes.find(0);
+    root->second->visited = true;
+    path.push_back(root->first);
+    minimumDistanceRec(root->second, distance, path, count, validApproximation, distanceType);
+    return distance;
 }
