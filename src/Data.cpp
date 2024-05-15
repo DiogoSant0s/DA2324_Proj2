@@ -5,10 +5,21 @@ Data::Data() : graph(Graph()), realGraph(false), tourismToyGraph(false), extraGr
     haversineReport = {0, 0, 0, 0,0,0,0,0, 0, 0};
 }
 
-Graph Data::getGraph() {return graph;}
-bool Data::getRealGraph() const {return realGraph;}
-bool Data::getExtraGraph() const {return extraGraph;}
-bool Data::getTourismToyGraph() const {return tourismToyGraph;}
+Graph Data::getGraph() {
+    return graph;
+}
+
+bool Data::getRealGraph() const {
+    return realGraph;
+}
+
+bool Data::getExtraGraph() const {
+    return extraGraph;
+}
+
+bool Data::getTourismToyGraph() const {
+    return tourismToyGraph;
+}
 
 void Data::readRealGraphs(int graphNumber) {
     realGraph = true;

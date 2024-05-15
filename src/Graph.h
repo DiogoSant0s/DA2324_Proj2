@@ -113,6 +113,14 @@ private:
      * @return Distance between the two nodes
      */
     double distanceBetweenNodes(int origin, int destination, bool realDistances);
+
+    double computeTourDistance(const vector<int> &tour, bool graphType);
+
+    static vector<int> selection(const vector<vector<int>> &population, const vector<pair<int, double>> &fitnessScores);
+
+    static vector<int> crossover(const vector<int> &parent1, const vector<int> &parent2);
+
+    static void mutation(vector<int> &tour);
 public:
     /**
      * Graph class constructor
@@ -229,6 +237,12 @@ public:
      * @return The shortest path between all nodes
      */
     vector<int> nearestNeighbor(double &totalDistance, bool distanceType);
+
+    vector<int> geneticAlgorithm(int populationSize, int numGenerations, bool graphType, double &totalDistance);
+
+    void initializePopulation(vector<vector<int>> &population);
+
+    void evaluatePopulation(const vector<vector<int>> &population, vector<pair<int, double>> &fitnessScores, bool graphType);
 };
 
 #endif //DA2_GRAPH_H

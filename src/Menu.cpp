@@ -63,6 +63,7 @@ double Menu::printElapsedTime(timeval start, timeval end) {
 
 void Menu::SelectGraphMenu() {
     printTitle();
+
     cout << "\n";
     cout << "\tSelect Menu\n";
     cout << "(1) Real Graphs\n";
@@ -207,6 +208,7 @@ void Menu::SelectGraphMenu() {
 void Menu::MainMenu() {
     clearScreen();
     printTitle();
+
     cout << "\n";
     cout << "\tMain Menu\n";
     cout << "(1) Graph Information\n";
@@ -214,7 +216,7 @@ void Menu::MainMenu() {
     cout << "(3) Minimum Spanning Tree (better aproximation)\n";
     cout << "(4) Minimum Spanning Tree (worse aproximation but faster for larger graphs)\n";
     cout << "(5) Nearest Neighbor Algorithm\n";
-    cout << "(6) \n";
+    cout << "(6) Genetic Algorithm\n";
     cout << "(7) Select another graph\n";
     cout << "(0) Exit\n";
     cout << " > ";
@@ -225,7 +227,6 @@ void Menu::MainMenu() {
             InfoMenu();
         case 2:
             if (!data.getGraph().getNodes().empty()) {
-                cout << "\nFinding cycle in the graph using backtracking. Please wait\n";
                 double distance = INT_MAX;
                 int shortestCycle[data.getGraph().getNodes().size()];
                 bool graphType;
@@ -245,6 +246,7 @@ void Menu::MainMenu() {
                 else {
                     graphType = true;
                 }
+                cout << "\nFinding cycle in the graph using backtracking. Please wait\n";
                 struct timeval start{}, end{};
                 gettimeofday(&start, nullptr);
                 ios_base::sync_with_stdio(false);
@@ -388,7 +390,42 @@ void Menu::MainMenu() {
             break;
         case 6:
             if (!data.getGraph().getNodes().empty()) {
-
+                bool graphType;
+                double distance = numeric_limits<double>::max();
+                if (data.getRealGraph()) {
+                    cout << "\nDo you want to use the real distances or the Haversine distances?\n";
+                    cout << "(1) Real distances\n";
+                    cout << "(2) Haversine distances\n";
+                    cout << " > ";
+                    int input1 = getUserInput({1, 2});
+                    if (input1 == 1) {
+                        graphType = false;
+                    }
+                    else {
+                        graphType = true;
+                    }
+                }
+                else {
+                    graphType = true;
+                }
+                cout << "\nFinding cycle in the graph using a Genetic algorithm. Please wait\n";
+                struct timeval start{}, end{};
+                gettimeofday(&start, nullptr);
+                ios_base::sync_with_stdio(false);
+                vector<int> path = data.getGraph().geneticAlgorithm(50, 100, graphType, distance);
+                gettimeofday(&end, nullptr);
+                for (int i : path) {
+                    Print(to_string(i), 6, false);
+                }
+                cout << "\n\nThe distance the travelling salesman travels is " <<  distance;
+                if (data.getRealGraph() && graphType) {
+                    data.haversineReport.distCristo = distance;
+                    data.haversineReport.timeCristo = printElapsedTime(start, end);
+                }
+                else {
+                    data.report.distCristo = distance;
+                    data.report.timeCristo = printElapsedTime(start, end);
+                }
             }
             break;
         case 7:
@@ -408,6 +445,7 @@ void Menu::MainMenu() {
 void Menu::InfoMenu() {
     clearScreen();
     printTitle();
+
     cout << "\n";
     cout << "\tGraph Information Menu\n";
     cout << "(1) All nodes of a graph\n";
@@ -622,6 +660,22 @@ void Menu::InfoMenu() {
                     stringstream dhnn;
                     dhnn << fixed << setprecision(3) << data.haversineReport.distNearNeighbor;
                     Print(dhnn.str(), 14, true);
+                }
+                cout << "|\n";
+                Print("Genetic", 11, true);
+                stringstream tgen;
+                tgen << fixed << setprecision(6) << data.report.timeCristo;
+                Print(tgen.str(), 14, true);
+                stringstream dgen;
+                dgen << fixed << setprecision(3) << data.report.distCristo;
+                Print(dgen.str(), 14, true);
+                if (data.getRealGraph()) {
+                    stringstream thgen;
+                    thgen << fixed << setprecision(6) << data.haversineReport.timeCristo;
+                    Print(thgen.str(), 14, true);
+                    stringstream dhgen;
+                    dhgen << fixed << setprecision(3) << data.haversineReport.distCristo;
+                    Print(dhgen.str(), 14, true);
                 }
                 cout << "|\n";
                 for (int i = 0; i < 43; i++) cout << "-";

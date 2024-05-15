@@ -1,5 +1,7 @@
 #include "Graph.h"
 
+#include <random>
+
 Graph::Graph() = default;
 
 void Graph::addNode(int id, double lon, double lat) {
@@ -28,6 +30,15 @@ vector<Graph::Edge*> Graph::getEdgesOut(int id) {
 
 double Graph::convertToRad(double value) {
     return value * (M_PI / 180);
+}
+
+double Graph::computeTourDistance(const vector<int>& tour, bool graphType) {
+    double totalDistance = 0.0;
+    for (int i = 0; i < tour.size() - 1; ++i) {
+        totalDistance += distanceBetweenNodes(tour[i], tour[i + 1], graphType);
+    }
+    totalDistance += distanceBetweenNodes(tour.back(), tour.front(), graphType);
+    return totalDistance;
 }
 
 double Graph::distanceBetweenNodes(int origin, int destination, bool realDistances) {
@@ -230,4 +241,97 @@ vector<int> Graph::nearestNeighbor(double& totalDistance, bool distanceType) {
         totalDistance += distanceBetweenNodes(path[i], path[i + 1], distanceType);
     }
     return path;
+}
+
+// Initialize population with random tours
+void Graph::initializePopulation(vector<vector<int>>& population) {
+    for (auto& tour : population) {
+        vector<int> nodesIds;
+        for (const auto& pair : nodes) {
+            nodesIds.push_back(pair.first);
+        }
+        shuffle(nodesIds.begin(), nodesIds.end(), std::mt19937(std::random_device()()));
+        tour = nodesIds;
+    }
+}
+
+// Evaluate fitness of each tour in the population
+void Graph::evaluatePopulation(const vector<vector<int>>& population, vector<pair<int, double>>& fitnessScores, bool graphType) {
+    for (int i = 0; i < population.size(); ++i) {
+        double distance = computeTourDistance(population[i], graphType);
+        fitnessScores.emplace_back(i, distance);
+    }
+    sort(fitnessScores.begin(), fitnessScores.end(), [](const auto& a, const auto& b) {
+        return a.second < b.second;
+    });
+}
+
+// Perform tournament selection to select parents
+vector<int> Graph::selection(const vector<vector<int>>& population, const vector<pair<int, double>>& fitnessScores) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dist(0, (int) population.size() / 2 - 1);
+    int idx1 = dist(gen);
+    int idx2 = dist(gen);
+    return (fitnessScores[idx1].second < fitnessScores[idx2].second) ? population[fitnessScores[idx1].first] : population[fitnessScores[idx2].first];
+}
+
+// Perform partially matched crossover
+vector<int> Graph::crossover(const vector<int>& parent1, const vector<int>& parent2) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dist(0, (int) parent1.size() - 1);
+    int startPos = dist(gen);
+    int endPos = dist(gen);
+    vector<int> child(parent1.size(), -1);
+    for (int i = startPos; i <= endPos; ++i) {
+        child[i] = parent1[i];
+    }
+    for (int i : parent2) {
+        if (find(child.begin(), child.end(), i) == child.end()) {
+            for (int & j : child) {
+                if (j == -1) {
+                    j = i;
+                    break;
+                }
+            }
+        }
+    }
+    return child;
+}
+
+void Graph::mutation(vector<int>& tour) {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<int> dist(0, (int) tour.size() - 1);
+    int idx1 = dist(gen);
+    int idx2 = dist(gen);
+    swap(tour[idx1], tour[idx2]);
+}
+
+vector<int> Graph::geneticAlgorithm(int populationSize, int numGenerations, bool graphType, double &totalDistance) {
+    vector<vector<int>> population(populationSize);
+    initializePopulation(population);
+    for (int generation = 0; generation < numGenerations; ++generation) {
+        vector<pair<int, double>> fitnessScores;
+        evaluatePopulation(population, fitnessScores, graphType);
+        vector<vector<int>> newPopulation;
+        for (int i = 0; i < populationSize; ++i) {
+            // Select parents and perform crossover
+            vector<int> offspring = crossover(selection(population, fitnessScores), selection(population, fitnessScores));
+            // Apply mutation to offspring
+            mutation(offspring);
+            newPopulation.push_back(offspring);
+        }
+        population = newPopulation;
+    }
+    vector<int> bestTour;
+    for (const auto& tour : population) {
+        double distance = computeTourDistance(tour, graphType);
+        if (distance < totalDistance) {
+            totalDistance = distance;
+            bestTour = tour;
+        }
+    }
+    return bestTour;
 }

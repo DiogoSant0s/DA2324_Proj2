@@ -28,12 +28,18 @@ private:
     bool extraGraph;
 public:
     /**
-     * Struct to store the report of the algorithms
+     * Struct to store the results of the algorithms
      */
     struct Report {
         double timeBacktrack, timeMST, timeMST2, timeNearNeighbor, timeCristo, distBacktrack, distMST, distMST2, distNearNeighbor, distCristo;
     };
+    /**
+     * Normal report
+     */
     Report report{};
+    /**
+     * Haversine report
+     */
     Report haversineReport{};
     /**
      * Data class constructor
@@ -66,7 +72,6 @@ public:
      * @return graph
      */
     Graph getGraph();
-
     /**
      * Bool method to get the boolean realGraph
      * @return realGraph
