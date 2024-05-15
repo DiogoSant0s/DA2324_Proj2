@@ -1,0 +1,65 @@
+\hypertarget{_graph_8h_source}{}\doxysection{Graph.\+h}
+\label{_graph_8h_source}\index{C:/Users/Diogo/Desktop/DA/DA2324\_Proj2/src/Graph.h@{C:/Users/Diogo/Desktop/DA/DA2324\_Proj2/src/Graph.h}}
+\mbox{\hyperlink{_graph_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef DA2\_GRAPH\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define DA2\_GRAPH\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <limits>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <unordered\_map>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include <unordered\_set>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_p_q_8h}{PQ.h}}"{}}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{keyword}{using namespace }std;}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{class_graph}{Graph}} \{}
+\DoxyCodeLine{20 \textcolor{keyword}{private}:}
+\DoxyCodeLine{24     \textcolor{keyword}{struct }Edge \{}
+\DoxyCodeLine{28         \textcolor{keywordtype}{int} origin;}
+\DoxyCodeLine{32         \textcolor{keywordtype}{int} dest;}
+\DoxyCodeLine{36         \textcolor{keywordtype}{float} distance;}
+\DoxyCodeLine{40         \textcolor{keywordtype}{string} distanceStr;}
+\DoxyCodeLine{41     \};}
+\DoxyCodeLine{45     \textcolor{keyword}{struct }Node \{}
+\DoxyCodeLine{49         \textcolor{keywordtype}{int} Id;}
+\DoxyCodeLine{53         \textcolor{keywordtype}{double} latitude;}
+\DoxyCodeLine{57         \textcolor{keywordtype}{double} longitude;}
+\DoxyCodeLine{61         \textcolor{keywordtype}{string} name;}
+\DoxyCodeLine{65         vector<Edge*> edgesOut = \{\};}
+\DoxyCodeLine{70         \textcolor{keywordtype}{bool} visited = \textcolor{keyword}{false};}
+\DoxyCodeLine{74         \textcolor{keywordtype}{double} distance = 0;}
+\DoxyCodeLine{78         \textcolor{keywordtype}{int} queueIndex = 0;}
+\DoxyCodeLine{82         Edge* path = \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{88         \textcolor{keywordtype}{bool} operator<(Node \& node)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{89             \textcolor{keywordflow}{return} this-\/>distance < node.distance;}
+\DoxyCodeLine{90         \}}
+\DoxyCodeLine{91     \};}
+\DoxyCodeLine{96     unordered\_map<int, Node*> nodes;}
+\DoxyCodeLine{103     \textcolor{keyword}{static} \textcolor{keywordtype}{double} convertToRad(\textcolor{keywordtype}{double} value);}
+\DoxyCodeLine{112     \textcolor{keywordtype}{double} distanceBetweenNodes(\textcolor{keywordtype}{int} origin, \textcolor{keywordtype}{int} destination, \textcolor{keywordtype}{bool} realDistances);}
+\DoxyCodeLine{113 \textcolor{keyword}{public}:}
+\DoxyCodeLine{118     \mbox{\hyperlink{class_graph_ae4c72b8ac4d693c49800a4c7e273654f}{Graph}}();}
+\DoxyCodeLine{126     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_a121c271a2ab9570d77b17be8a032c8a0}{addNode}}(\textcolor{keywordtype}{int} \textcolor{keywordtype}{id}, \textcolor{keywordtype}{double} lon, \textcolor{keywordtype}{double} lat);}
+\DoxyCodeLine{135     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_ac6528d4b2fbf4d4be51d71174ba4a962}{addEdge}}(\textcolor{keywordtype}{int} org, \textcolor{keywordtype}{int} destination, \textcolor{keywordtype}{float} dist, \textcolor{keyword}{const} \textcolor{keywordtype}{string}\& distance);}
+\DoxyCodeLine{141     unordered\_map<int, Node*> \mbox{\hyperlink{class_graph_a4e09ba677d50defaab9a4157c11c8a82}{getNodes}}();}
+\DoxyCodeLine{148     vector<Edge*> \mbox{\hyperlink{class_graph_afca91901cc6f62ad19bb9828397570c4}{getEdgesOut}}(\textcolor{keywordtype}{int} \textcolor{keywordtype}{id});}
+\DoxyCodeLine{157     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_ad61381221144769c050d2f786a8fa296}{backtrackingApproach}}(\textcolor{keywordtype}{double} \&shortestDistance, \textcolor{keywordtype}{int} *shortestCycle, \textcolor{keywordtype}{bool} distanceType);}
+\DoxyCodeLine{171     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_a1c1ae9a9d52fb6503e0273e90b487559}{backtrackingApproachRec}}(\textcolor{keywordtype}{double} distance, \textcolor{keywordtype}{double} \&shortestDistance, \textcolor{keywordtype}{int} currentIndex, \textcolor{keywordtype}{int} n, \textcolor{keywordtype}{int} cycle[], \textcolor{keywordtype}{int} shortestCycle[], \textcolor{keywordtype}{bool} distanceType);}
+\DoxyCodeLine{180     vector<int> \mbox{\hyperlink{class_graph_ad7ae37384c3021b24eca43ba34682408}{primMST}}(\textcolor{keywordtype}{bool} distanceType, \textcolor{keywordtype}{double} \&totalDistance);}
+\DoxyCodeLine{191     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_graph_ad9521b51cd314e14ecb15b6acdd072e8}{orderMST}}(\textcolor{keywordtype}{int} nodeId, vector<int> \&primVisit, vector<int>\& preOrder, \textcolor{keywordtype}{bool} distanceType);}
+\DoxyCodeLine{200     vector<int> \mbox{\hyperlink{class_graph_aa9909efa3cc6905ee8056e5f0f885249}{primMST2}}(\textcolor{keywordtype}{bool} distanceType, \textcolor{keywordtype}{double} \&totalDistance);}
+\DoxyCodeLine{211     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_graph_a139f0c2c12f0c7476f8eeab7a5e74839}{orderMST2}}(\textcolor{keywordtype}{int} nodeId, vector<int> \&primVisit, vector<int> \&preOrder, \mbox{\hyperlink{class_graph}{Graph}} *mst, \textcolor{keywordtype}{bool} distanceType);}
+\DoxyCodeLine{220     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_a032b6f8b0b7a341824a8334e79265cc1}{helper}}(\textcolor{keywordtype}{int} node, vector<int> \&preOrder, \mbox{\hyperlink{class_graph}{Graph}} *mst);}
+\DoxyCodeLine{227     vector<int> \mbox{\hyperlink{class_graph_a696df0177247b335502c37e8852080b6}{nearestNeighbor}}(\textcolor{keywordtype}{int} startNode, \textcolor{keywordtype}{double} \&totalDistance, \textcolor{keywordtype}{bool} distanceType);}
+\DoxyCodeLine{234     \textcolor{keywordtype}{double} \mbox{\hyperlink{class_graph_a4e268df370823cef1798178ac2a658a6}{minimumDistance}}(vector<int> \&path, \textcolor{keywordtype}{bool} distanceType);}
+\DoxyCodeLine{244     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_graph_ab48285d4da65e69af7a8ce7cf7150312}{minimumDistanceRec}}(Node *node, \textcolor{keywordtype}{double} \&distance, vector<int> \&path, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{int} count, \textcolor{keywordtype}{bool} \&valid, \textcolor{keywordtype}{bool} distanceType);}
+\DoxyCodeLine{245 \};}
+\DoxyCodeLine{246 }
+\DoxyCodeLine{247 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//DA2\_GRAPH\_H}}
+
+\end{DoxyCode}

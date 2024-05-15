@@ -468,17 +468,17 @@ void Menu::MainMenu() {
                 }
                 cout << "\n\nThe distance the travelling salesman travels is " <<  distance;
                 if (data.getRealGraph() && !graphType) {
-                    if (data.haversineReport.distGenetic > distance) {
-                        data.haversineReport.distGenetic = distance;
-                        data.haversineReport.timeGenetic = printElapsedTime(start, end);
+                    if (data.haversineReport.distMDRT > distance) {
+                        data.haversineReport.distMDRT = distance;
+                        data.haversineReport.timeMDRT = printElapsedTime(start, end);
                     } else {
                         printElapsedTime(start, end);
                     }
                 }
                 else {
-                    if (data.report.distGenetic > distance) {
-                        data.report.distGenetic = distance;
-                        data.report.timeGenetic = printElapsedTime(start, end);
+                    if (data.report.distMDRT > distance) {
+                        data.report.distMDRT = distance;
+                        data.report.timeMDRT = printElapsedTime(start, end);
                     } else {
                         printElapsedTime(start, end);
                     }
@@ -759,17 +759,17 @@ void Menu::InfoMenu() {
                 cout << "|\n";
                 Print("MDTR", 11, true);
                 stringstream tgen;
-                checkReportValues(tgen, 6, data.report.timeGenetic);
+                checkReportValues(tgen, 6, data.report.timeMDRT);
                 Print(tgen.str(), 14, true);
                 stringstream dgen;
-                checkReportValues(dgen, 3, data.report.distGenetic);
+                checkReportValues(dgen, 3, data.report.distMDRT);
                 Print(dgen.str(), 14, true);
                 if (data.getRealGraph()) {
                     stringstream thgen;
-                    checkReportValues(thgen, 6, data.haversineReport.timeGenetic);
+                    checkReportValues(thgen, 6, data.haversineReport.timeMDRT);
                     Print(thgen.str(), 14, true);
                     stringstream dhgen;
-                    checkReportValues(dhgen, 3, data.haversineReport.distGenetic);
+                    checkReportValues(dhgen, 3, data.haversineReport.distMDRT);
                     Print(dhgen.str(), 14, true);
                 }
                 cout << "|\n";

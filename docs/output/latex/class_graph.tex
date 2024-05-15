@@ -1,0 +1,315 @@
+\hypertarget{class_graph}{}\doxysection{Graph Class Reference}
+\label{class_graph}\index{Graph@{Graph}}
+
+
+{\ttfamily \#include $<$Graph.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_graph_ae4c72b8ac4d693c49800a4c7e273654f}{Graph}} ()
+\item 
+void \mbox{\hyperlink{class_graph_a121c271a2ab9570d77b17be8a032c8a0}{add\+Node}} (int id, double lon, double lat)
+\item 
+void \mbox{\hyperlink{class_graph_ac6528d4b2fbf4d4be51d71174ba4a962}{add\+Edge}} (int org, int destination, float dist, const string \&distance)
+\item 
+unordered\+\_\+map$<$ int, Node $\ast$ $>$ \mbox{\hyperlink{class_graph_a4e09ba677d50defaab9a4157c11c8a82}{get\+Nodes}} ()
+\item 
+vector$<$ Edge $\ast$ $>$ \mbox{\hyperlink{class_graph_afca91901cc6f62ad19bb9828397570c4}{get\+Edges\+Out}} (int id)
+\item 
+void \mbox{\hyperlink{class_graph_ad61381221144769c050d2f786a8fa296}{backtracking\+Approach}} (double \&shortest\+Distance, int $\ast$shortest\+Cycle, bool distance\+Type)
+\item 
+void \mbox{\hyperlink{class_graph_a1c1ae9a9d52fb6503e0273e90b487559}{backtracking\+Approach\+Rec}} (double distance, double \&shortest\+Distance, int current\+Index, int n, int cycle\mbox{[}$\,$\mbox{]}, int shortest\+Cycle\mbox{[}$\,$\mbox{]}, bool distance\+Type)
+\item 
+vector$<$ int $>$ \mbox{\hyperlink{class_graph_ad7ae37384c3021b24eca43ba34682408}{prim\+MST}} (bool distance\+Type, double \&total\+Distance)
+\item 
+double \mbox{\hyperlink{class_graph_ad9521b51cd314e14ecb15b6acdd072e8}{order\+MST}} (int node\+Id, vector$<$ int $>$ \&prim\+Visit, vector$<$ int $>$ \&pre\+Order, bool distance\+Type)
+\item 
+vector$<$ int $>$ \mbox{\hyperlink{class_graph_aa9909efa3cc6905ee8056e5f0f885249}{prim\+MST2}} (bool distance\+Type, double \&total\+Distance)
+\item 
+double \mbox{\hyperlink{class_graph_a139f0c2c12f0c7476f8eeab7a5e74839}{order\+MST2}} (int node\+Id, vector$<$ int $>$ \&prim\+Visit, vector$<$ int $>$ \&pre\+Order, \mbox{\hyperlink{class_graph}{Graph}} $\ast$mst, bool distance\+Type)
+\item 
+void \mbox{\hyperlink{class_graph_a032b6f8b0b7a341824a8334e79265cc1}{helper}} (int node, vector$<$ int $>$ \&pre\+Order, \mbox{\hyperlink{class_graph}{Graph}} $\ast$mst)
+\item 
+vector$<$ int $>$ \mbox{\hyperlink{class_graph_a696df0177247b335502c37e8852080b6}{nearest\+Neighbor}} (int start\+Node, double \&total\+Distance, bool distance\+Type)
+\item 
+double \mbox{\hyperlink{class_graph_a4e268df370823cef1798178ac2a658a6}{minimum\+Distance}} (vector$<$ int $>$ \&path, bool distance\+Type)
+\item 
+void \mbox{\hyperlink{class_graph_ab48285d4da65e69af7a8ce7cf7150312}{minimum\+Distance\+Rec}} (Node $\ast$node, double \&distance, vector$<$ int $>$ \&path, unsigned int count, bool \&valid, bool distance\+Type)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The \mbox{\hyperlink{class_graph}{Graph}} class configures the attributes of a graph and the more complicated functions developed 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_graph_ae4c72b8ac4d693c49800a4c7e273654f}\label{class_graph_ae4c72b8ac4d693c49800a4c7e273654f}} 
+\index{Graph@{Graph}!Graph@{Graph}}
+\index{Graph@{Graph}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{Graph()}{Graph()}}
+{\footnotesize\ttfamily Graph\+::\+Graph (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\hyperlink{class_graph}{Graph}} class constructor
+
+Creates a default \mbox{\hyperlink{class_graph}{Graph}} 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_graph_ac6528d4b2fbf4d4be51d71174ba4a962}\label{class_graph_ac6528d4b2fbf4d4be51d71174ba4a962}} 
+\index{Graph@{Graph}!addEdge@{addEdge}}
+\index{addEdge@{addEdge}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{addEdge()}{addEdge()}}
+{\footnotesize\ttfamily void Graph\+::add\+Edge (\begin{DoxyParamCaption}\item[{int}]{org,  }\item[{int}]{destination,  }\item[{float}]{dist,  }\item[{const string \&}]{distance }\end{DoxyParamCaption})}
+
+Add an edge from a source node to a target node 
+\begin{DoxyParams}{Parameters}
+{\em org} & The source node \\
+\hline
+{\em destination} & The target node \\
+\hline
+{\em dist} & Distance between the source and target nodes \\
+\hline
+{\em distance} & Distance between the source and target nodes as a string\\
+\hline
+\end{DoxyParams}
+Time Complexity -\/ O(1) \mbox{\Hypertarget{class_graph_a121c271a2ab9570d77b17be8a032c8a0}\label{class_graph_a121c271a2ab9570d77b17be8a032c8a0}} 
+\index{Graph@{Graph}!addNode@{addNode}}
+\index{addNode@{addNode}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{addNode()}{addNode()}}
+{\footnotesize\ttfamily void Graph\+::add\+Node (\begin{DoxyParamCaption}\item[{int}]{id,  }\item[{double}]{lon,  }\item[{double}]{lat }\end{DoxyParamCaption})}
+
+Add a node to the \mbox{\hyperlink{class_graph}{Graph}} 
+\begin{DoxyParams}{Parameters}
+{\em id} & The node\textquotesingle{}s id \\
+\hline
+{\em lon} & The node\textquotesingle{}s longitude \\
+\hline
+{\em lat} & The node\textquotesingle{}s latitude\\
+\hline
+\end{DoxyParams}
+Time Complexity -\/ O(1) \mbox{\Hypertarget{class_graph_ad61381221144769c050d2f786a8fa296}\label{class_graph_ad61381221144769c050d2f786a8fa296}} 
+\index{Graph@{Graph}!backtrackingApproach@{backtrackingApproach}}
+\index{backtrackingApproach@{backtrackingApproach}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{backtrackingApproach()}{backtrackingApproach()}}
+{\footnotesize\ttfamily void Graph\+::backtracking\+Approach (\begin{DoxyParamCaption}\item[{double \&}]{shortest\+Distance,  }\item[{int $\ast$}]{shortest\+Cycle,  }\item[{bool}]{distance\+Type }\end{DoxyParamCaption})}
+
+Function that calls the recursive function to find the shortest path between two nodes using a backtracking algorithm 
+\begin{DoxyParams}{Parameters}
+{\em shortest\+Distance} & The shortest distance travelled \\
+\hline
+{\em shortest\+Cycle} & The shortest cycle \\
+\hline
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances\\
+\hline
+\end{DoxyParams}
+Time Complexity -\/ O(1) \begin{DoxyReturn}{Returns}
+The shortest path between the two nodes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_a1c1ae9a9d52fb6503e0273e90b487559}\label{class_graph_a1c1ae9a9d52fb6503e0273e90b487559}} 
+\index{Graph@{Graph}!backtrackingApproachRec@{backtrackingApproachRec}}
+\index{backtrackingApproachRec@{backtrackingApproachRec}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{backtrackingApproachRec()}{backtrackingApproachRec()}}
+{\footnotesize\ttfamily void Graph\+::backtracking\+Approach\+Rec (\begin{DoxyParamCaption}\item[{double}]{distance,  }\item[{double \&}]{shortest\+Distance,  }\item[{int}]{current\+Index,  }\item[{int}]{n,  }\item[{int}]{cycle\mbox{[}$\,$\mbox{]},  }\item[{int}]{shortest\+Cycle\mbox{[}$\,$\mbox{]},  }\item[{bool}]{distance\+Type }\end{DoxyParamCaption})}
+
+Finds the shortest path between two nodes using a backtracking algorithm recursively 
+\begin{DoxyParams}{Parameters}
+{\em distance} & The current distance travelled \\
+\hline
+{\em shortest\+Distance} & The shortest distance travelled \\
+\hline
+{\em current\+Index} & The current node\textquotesingle{}s index \\
+\hline
+{\em n} & The number of nodes \\
+\hline
+{\em cycle} & The current cycle \\
+\hline
+{\em shortest\+Cycle} & The shortest cycle \\
+\hline
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances\\
+\hline
+\end{DoxyParams}
+Time Complexity -\/ O(\+V$^\wedge$2)
+
+V is the number of nodes \begin{DoxyReturn}{Returns}
+The shortest path between the two nodes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_afca91901cc6f62ad19bb9828397570c4}\label{class_graph_afca91901cc6f62ad19bb9828397570c4}} 
+\index{Graph@{Graph}!getEdgesOut@{getEdgesOut}}
+\index{getEdgesOut@{getEdgesOut}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{getEdgesOut()}{getEdgesOut()}}
+{\footnotesize\ttfamily vector$<$ Graph\+::\+Edge $\ast$ $>$ Graph\+::get\+Edges\+Out (\begin{DoxyParamCaption}\item[{int}]{id }\end{DoxyParamCaption})}
+
+Getter for the outgoing edges of a certain node 
+\begin{DoxyParams}{Parameters}
+{\em id} & Id of the node that has the edges you are looking for\\
+\hline
+\end{DoxyParams}
+Time Complexity\+: O(1) \begin{DoxyReturn}{Returns}
+The object edges\+Out of said node 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_a4e09ba677d50defaab9a4157c11c8a82}\label{class_graph_a4e09ba677d50defaab9a4157c11c8a82}} 
+\index{Graph@{Graph}!getNodes@{getNodes}}
+\index{getNodes@{getNodes}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{getNodes()}{getNodes()}}
+{\footnotesize\ttfamily unordered\+\_\+map$<$ int, Graph\+::\+Node $\ast$ $>$ Graph\+::get\+Nodes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Getter for the object nodes
+
+Time Complexity\+: O(1) \begin{DoxyReturn}{Returns}
+The object nodes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_a032b6f8b0b7a341824a8334e79265cc1}\label{class_graph_a032b6f8b0b7a341824a8334e79265cc1}} 
+\index{Graph@{Graph}!helper@{helper}}
+\index{helper@{helper}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{helper()}{helper()}}
+{\footnotesize\ttfamily void Graph\+::helper (\begin{DoxyParamCaption}\item[{int}]{node,  }\item[{vector$<$ int $>$ \&}]{pre\+Order,  }\item[{\mbox{\hyperlink{class_graph}{Graph}} $\ast$}]{mst }\end{DoxyParamCaption})}
+
+Auxiliar function to perform the order 
+\begin{DoxyParams}{Parameters}
+{\em node} & The current node\textquotesingle{}s id \\
+\hline
+{\em pre\+Order} & The vector with all nodes after ordering \\
+\hline
+{\em mst} & The graph representing the MST after Prim\textquotesingle{}s algorithm\\
+\hline
+\end{DoxyParams}
+Time Complexity -\/ O(\+E)
+
+E is the number of edges \mbox{\Hypertarget{class_graph_a4e268df370823cef1798178ac2a658a6}\label{class_graph_a4e268df370823cef1798178ac2a658a6}} 
+\index{Graph@{Graph}!minimumDistance@{minimumDistance}}
+\index{minimumDistance@{minimumDistance}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{minimumDistance()}{minimumDistance()}}
+{\footnotesize\ttfamily double Graph\+::minimum\+Distance (\begin{DoxyParamCaption}\item[{vector$<$ int $>$ \&}]{path,  }\item[{bool}]{distance\+Type }\end{DoxyParamCaption})}
+
+Function that calls the recursive function to find the shortest path between all nodes using a minimum distance algorithm 
+\begin{DoxyParams}{Parameters}
+{\em path} & The shortest path between all nodes \\
+\hline
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The total distance travelled 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_ab48285d4da65e69af7a8ce7cf7150312}\label{class_graph_ab48285d4da65e69af7a8ce7cf7150312}} 
+\index{Graph@{Graph}!minimumDistanceRec@{minimumDistanceRec}}
+\index{minimumDistanceRec@{minimumDistanceRec}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{minimumDistanceRec()}{minimumDistanceRec()}}
+{\footnotesize\ttfamily void Graph\+::minimum\+Distance\+Rec (\begin{DoxyParamCaption}\item[{Node $\ast$}]{node,  }\item[{double \&}]{distance,  }\item[{vector$<$ int $>$ \&}]{path,  }\item[{unsigned int}]{count,  }\item[{bool \&}]{valid,  }\item[{bool}]{distance\+Type }\end{DoxyParamCaption})}
+
+Minimum distance recursive algorithm to find the shortest path between all nodes recursively 
+\begin{DoxyParams}{Parameters}
+{\em node} & The current node \\
+\hline
+{\em distance} & The current distance travelled \\
+\hline
+{\em path} & The shortest path between all nodes \\
+\hline
+{\em count} & The number of nodes visited \\
+\hline
+{\em valid} & Boolean used to know if the path is valid \\
+\hline
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_graph_a696df0177247b335502c37e8852080b6}\label{class_graph_a696df0177247b335502c37e8852080b6}} 
+\index{Graph@{Graph}!nearestNeighbor@{nearestNeighbor}}
+\index{nearestNeighbor@{nearestNeighbor}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{nearestNeighbor()}{nearestNeighbor()}}
+{\footnotesize\ttfamily vector$<$ int $>$ Graph\+::nearest\+Neighbor (\begin{DoxyParamCaption}\item[{int}]{start\+Node,  }\item[{double \&}]{total\+Distance,  }\item[{bool}]{distance\+Type }\end{DoxyParamCaption})}
+
+Nearest Neighbor algorithm to find the shortest path between all nodes 
+\begin{DoxyParams}{Parameters}
+{\em total\+Distance} & The total distance travelled \\
+\hline
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The shortest path between all nodes 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_ad9521b51cd314e14ecb15b6acdd072e8}\label{class_graph_ad9521b51cd314e14ecb15b6acdd072e8}} 
+\index{Graph@{Graph}!orderMST@{orderMST}}
+\index{orderMST@{orderMST}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{orderMST()}{orderMST()}}
+{\footnotesize\ttfamily double Graph\+::order\+MST (\begin{DoxyParamCaption}\item[{int}]{node\+Id,  }\item[{vector$<$ int $>$ \&}]{prim\+Visit,  }\item[{vector$<$ int $>$ \&}]{pre\+Order,  }\item[{bool}]{distance\+Type }\end{DoxyParamCaption})}
+
+Auxiliar function to Prim\textquotesingle{}s algorithm 
+\begin{DoxyParams}{Parameters}
+{\em node\+Id} & The node\textquotesingle{}s id \\
+\hline
+{\em prim\+Visit} & The vector with all nodes and sorted by prim\textquotesingle{}s algorithm \\
+\hline
+{\em pre\+Order} & The vector with all nodes after ordering \\
+\hline
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances\\
+\hline
+\end{DoxyParams}
+Time Complexity -\/ O(\+V)
+
+V is the number of nodes \begin{DoxyReturn}{Returns}
+The total distance travelled in the MST 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_a139f0c2c12f0c7476f8eeab7a5e74839}\label{class_graph_a139f0c2c12f0c7476f8eeab7a5e74839}} 
+\index{Graph@{Graph}!orderMST2@{orderMST2}}
+\index{orderMST2@{orderMST2}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{orderMST2()}{orderMST2()}}
+{\footnotesize\ttfamily double Graph\+::order\+MST2 (\begin{DoxyParamCaption}\item[{int}]{node\+Id,  }\item[{vector$<$ int $>$ \&}]{prim\+Visit,  }\item[{vector$<$ int $>$ \&}]{pre\+Order,  }\item[{\mbox{\hyperlink{class_graph}{Graph}} $\ast$}]{mst,  }\item[{bool}]{distance\+Type }\end{DoxyParamCaption})}
+
+Auxiliar function to Prim\textquotesingle{}s algorithm but with a worse 2-\/approximation algorithm while being faster for larger graphs 
+\begin{DoxyParams}{Parameters}
+{\em node\+Id} & The node\textquotesingle{}s id \\
+\hline
+{\em prim\+Visit} & The vector with all nodes and sorted by prim\textquotesingle{}s algorithm \\
+\hline
+{\em pre\+Order} & The vector with all nodes after ordering \\
+\hline
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances\\
+\hline
+\end{DoxyParams}
+Time Complexity -\/ O(\+V)
+
+V is the number of nodes \begin{DoxyReturn}{Returns}
+The total distance travelled in the MST 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_ad7ae37384c3021b24eca43ba34682408}\label{class_graph_ad7ae37384c3021b24eca43ba34682408}} 
+\index{Graph@{Graph}!primMST@{primMST}}
+\index{primMST@{primMST}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{primMST()}{primMST()}}
+{\footnotesize\ttfamily vector$<$ int $>$ Graph\+::prim\+MST (\begin{DoxyParamCaption}\item[{bool}]{distance\+Type,  }\item[{double \&}]{total\+Distance }\end{DoxyParamCaption})}
+
+Finds the minimum spanning tree of a graph using Prim\textquotesingle{}s algorithm 
+\begin{DoxyParams}{Parameters}
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances \\
+\hline
+{\em total\+Distance} & The total distance travelled in the MST\\
+\hline
+\end{DoxyParams}
+Time Complexity -\/ O(\+V $\ast$ E)
+
+V is the number of nodes and E is the number of edges \begin{DoxyReturn}{Returns}
+The visited\+Vertices vector that contains the MST 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_graph_aa9909efa3cc6905ee8056e5f0f885249}\label{class_graph_aa9909efa3cc6905ee8056e5f0f885249}} 
+\index{Graph@{Graph}!primMST2@{primMST2}}
+\index{primMST2@{primMST2}!Graph@{Graph}}
+\doxysubsubsection{\texorpdfstring{primMST2()}{primMST2()}}
+{\footnotesize\ttfamily vector$<$ int $>$ Graph\+::prim\+MST2 (\begin{DoxyParamCaption}\item[{bool}]{distance\+Type,  }\item[{double \&}]{total\+Distance }\end{DoxyParamCaption})}
+
+Finds the minimum spanning tree of a graph using Prim\textquotesingle{}s algorithm but with a worse 2-\/approximation algorithm while being faster for larger graphs 
+\begin{DoxyParams}{Parameters}
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances \\
+\hline
+{\em total\+Distance} & The total distance travelled in the MST\\
+\hline
+\end{DoxyParams}
+Time Complexity -\/ O(\+V $\ast$ E)
+
+V is the number of nodes and E is the number of edges \begin{DoxyReturn}{Returns}
+The visited\+Vertices vector that contains the MST 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Diogo/\+Desktop/\+DA/\+DA2324\+\_\+\+Proj2/src/\mbox{\hyperlink{_graph_8h}{Graph.\+h}}\item 
+C\+:/\+Users/\+Diogo/\+Desktop/\+DA/\+DA2324\+\_\+\+Proj2/src/\mbox{\hyperlink{_graph_8cpp}{Graph.\+cpp}}\end{DoxyCompactItemize}

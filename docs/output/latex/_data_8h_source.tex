@@ -1,0 +1,45 @@
+\hypertarget{_data_8h_source}{}\doxysection{Data.\+h}
+\label{_data_8h_source}\index{C:/Users/Diogo/Desktop/DA/DA2324\_Proj2/src/Data.h@{C:/Users/Diogo/Desktop/DA/DA2324\_Proj2/src/Data.h}}
+\mbox{\hyperlink{_data_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef DA2\_DATA\_H}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define DA2\_DATA\_H}}
+\DoxyCodeLine{3 }
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <sstream>}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#include "{}\mbox{\hyperlink{_graph_8h}{Graph.h}}"{}}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{11 \textcolor{keyword}{class }\mbox{\hyperlink{class_data}{Data}} \{}
+\DoxyCodeLine{12 \textcolor{keyword}{private}:}
+\DoxyCodeLine{16     \mbox{\hyperlink{class_graph}{Graph}} graph;}
+\DoxyCodeLine{20     \textcolor{keywordtype}{bool} realGraph;}
+\DoxyCodeLine{24     \textcolor{keywordtype}{bool} tourismToyGraph;}
+\DoxyCodeLine{28     \textcolor{keywordtype}{bool} extraGraph;}
+\DoxyCodeLine{29 \textcolor{keyword}{public}:}
+\DoxyCodeLine{33     \textcolor{keyword}{struct }\mbox{\hyperlink{struct_data_1_1_report}{Report}} \{}
+\DoxyCodeLine{37         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_a8ddb679454ad3e73c6ce51692fa9c7ed}{timeBacktrack}};}
+\DoxyCodeLine{41         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_a63a6147192f063dba7f779d6ae0b4212}{timeMST}};}
+\DoxyCodeLine{45         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_a2fa6643087f5fe38662b29f990c9bfad}{timeMST2}};}
+\DoxyCodeLine{49         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_a3922aa609b3a70065bd71d1748fae375}{timeNearNeighbor}};}
+\DoxyCodeLine{53         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_a1283742476528a3a94c79cac587ed408}{timeMDRT}};}
+\DoxyCodeLine{57         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_ab39be4d9c5b13214560f8882e36e875d}{distBacktrack}};}
+\DoxyCodeLine{61         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_aa5472ba30062144f8e09594dd7cef9a4}{distMST}};}
+\DoxyCodeLine{65         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_a363e1c1f10c9b7a23228a5a17e69057a}{distMST2}};}
+\DoxyCodeLine{69         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_a842970fc3854aab3059e6c47f04ab641}{distNearNeighbor}};}
+\DoxyCodeLine{73         \textcolor{keywordtype}{double} \mbox{\hyperlink{struct_data_1_1_report_a37e1ada01f9c1111bc4eb8843b2b7345}{distMDRT}};}
+\DoxyCodeLine{74     \};}
+\DoxyCodeLine{78     \mbox{\hyperlink{struct_data_1_1_report}{Report}} \mbox{\hyperlink{class_data_a8ccf1299e7010b6ef57d5f7a13277066}{report}}\{\};}
+\DoxyCodeLine{82     \mbox{\hyperlink{struct_data_1_1_report}{Report}} \mbox{\hyperlink{class_data_a8ebd5f4a6ea29ba0d6ebd376830595c8}{haversineReport}}\{\};}
+\DoxyCodeLine{87     \mbox{\hyperlink{class_data_af11f741cb7f587e2e495452a8905a22a}{Data}}();}
+\DoxyCodeLine{94     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_data_a42de7271c057de5d1a14c455722a1381}{readRealGraphs}}(\textcolor{keywordtype}{int} graphNumber);}
+\DoxyCodeLine{101     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_data_ac9c997be3ec47840884a190bf40c0b79}{readToyGraphs}}(\textcolor{keyword}{const} \textcolor{keywordtype}{string}\& graphName);}
+\DoxyCodeLine{108     \textcolor{keywordtype}{void} \mbox{\hyperlink{class_data_a0451282f40566a041bc6d29ee17ff94c}{readExtraGraphs}}(\textcolor{keywordtype}{int} graphNumber);}
+\DoxyCodeLine{114     \mbox{\hyperlink{class_graph}{Graph}} \mbox{\hyperlink{class_data_a22cf38f823d468873cbdabb81923bf3c}{getGraph}}();}
+\DoxyCodeLine{120     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_data_a251d0f3917eede5a505ea0a4ca36a9c5}{getRealGraph}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{126     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_data_ac96469543c58c7c4f50f3100e5a189e9}{getExtraGraph}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{132     \textcolor{keywordtype}{bool} \mbox{\hyperlink{class_data_a86a4983ffc0ce6a93e73f65e9a35f130}{getTourismToyGraph}}() \textcolor{keyword}{const};}
+\DoxyCodeLine{133 \};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 \textcolor{preprocessor}{\#endif }\textcolor{comment}{//DA2\_DATA\_H}}
+
+\end{DoxyCode}

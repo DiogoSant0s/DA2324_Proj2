@@ -121,8 +121,7 @@ public:
      * @param id The node's id
      * @param lon The node's longitude
      * @param lat The node's latitude
-     * @details Time Complexity - O(V)
-     * @details V is the number of nodes
+     * @details Time Complexity - O(1)
      */
     void addNode(int id, double lon, double lat);
     /**
