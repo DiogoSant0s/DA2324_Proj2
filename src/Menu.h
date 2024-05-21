@@ -27,8 +27,8 @@ public:
     static void printTitle();
     /**
      * Void method that ensures the user's input integer is valid
-     * @details Time Complexity - O(1)
      * @param inputs Integer vector
+     * @details Time Complexity - O(1)
      * @return The integer provided by the user, verified to be valid
      */
     static int getUserInput(vector<int> inputs);
@@ -39,10 +39,10 @@ public:
     static void clearScreen();
     /**
      * Void method that outputs a string in a table block or in a path
-     * @details Time Complexity - O(1)
      * @param s String to Print
      * @param length Space given to the string in the table
      * @param tableOrPath Bool used to determine if we're printing a Table or a Path
+     * @details Time Complexity - O(1)
      */
     static void Print(const string &s, int length, bool tableOrPath);
     /**

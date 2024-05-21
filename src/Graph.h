@@ -152,7 +152,6 @@ public:
      * @param shortestCycle The shortest cycle
      * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
      * @details Time Complexity - O(1)
-     * @return The shortest path between the two nodes
      */
     void backtrackingApproach(double &shortestDistance, int *shortestCycle, bool distanceType);
     /**
@@ -166,7 +165,6 @@ public:
      * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
      * @details Time Complexity - O(V^2)
      * @details V is the number of nodes
-     * @return The shortest path between the two nodes
      */
     void backtrackingApproachRec(double distance, double &shortestDistance, int currentIndex, int n, int cycle[], int shortestCycle[], bool distanceType);
     /**
@@ -203,6 +201,7 @@ public:
      * @param nodeId The node's id
      * @param primVisit The vector with all nodes and sorted by prim's algorithm
      * @param preOrder The vector with all nodes after ordering
+     * @param mst The graph representing the MST after Prim's algorithm
      * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
      * @details Time Complexity - O(V)
      * @details V is the number of nodes
@@ -220,8 +219,11 @@ public:
     void helper(int node, vector<int> &preOrder, Graph *mst);
     /**
      * Nearest Neighbor algorithm to find the shortest path between all nodes
+     * @param startNode The node where the algorithm starts
      * @param totalDistance The total distance travelled
      * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @details Time Complexity - O(V^2)
+     * @details V is the number of nodes
      * @return The shortest path between all nodes
      */
     vector<int> nearestNeighbor(int startNode, double &totalDistance, bool distanceType);
@@ -229,6 +231,8 @@ public:
      * Function that calls the recursive function to find the shortest path between all nodes using a minimum distance algorithm
      * @param path The shortest path between all nodes
      * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @details Time Complexity - O(V^2)
+     * @details V is the number of nodes
      * @return The total distance travelled
      */
     double minimumDistance(vector<int> &path, bool distanceType);
@@ -240,6 +244,8 @@ public:
      * @param count The number of nodes visited
      * @param valid Boolean used to know if the path is valid
      * @param distanceType Boolean used to know if we want the real distances or the Haversine distances
+     * @details Time Complexity - O(E)
+     * @details E is the number of edges of each node
      */
     void minimumDistanceRec(Node *node, double &distance, vector<int> &path, unsigned int count, bool &valid, bool distanceType);
 };

@@ -101,10 +101,7 @@ Function that calls the recursive function to find the shortest path between two
 {\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances\\
 \hline
 \end{DoxyParams}
-Time Complexity -\/ O(1) \begin{DoxyReturn}{Returns}
-The shortest path between the two nodes 
-\end{DoxyReturn}
-\mbox{\Hypertarget{class_graph_a1c1ae9a9d52fb6503e0273e90b487559}\label{class_graph_a1c1ae9a9d52fb6503e0273e90b487559}} 
+Time Complexity -\/ O(1) \mbox{\Hypertarget{class_graph_a1c1ae9a9d52fb6503e0273e90b487559}\label{class_graph_a1c1ae9a9d52fb6503e0273e90b487559}} 
 \index{Graph@{Graph}!backtrackingApproachRec@{backtrackingApproachRec}}
 \index{backtrackingApproachRec@{backtrackingApproachRec}!Graph@{Graph}}
 \doxysubsubsection{\texorpdfstring{backtrackingApproachRec()}{backtrackingApproachRec()}}
@@ -129,10 +126,7 @@ Finds the shortest path between two nodes using a backtracking algorithm recursi
 \end{DoxyParams}
 Time Complexity -\/ O(\+V$^\wedge$2)
 
-V is the number of nodes \begin{DoxyReturn}{Returns}
-The shortest path between the two nodes 
-\end{DoxyReturn}
-\mbox{\Hypertarget{class_graph_afca91901cc6f62ad19bb9828397570c4}\label{class_graph_afca91901cc6f62ad19bb9828397570c4}} 
+V is the number of nodes \mbox{\Hypertarget{class_graph_afca91901cc6f62ad19bb9828397570c4}\label{class_graph_afca91901cc6f62ad19bb9828397570c4}} 
 \index{Graph@{Graph}!getEdgesOut@{getEdgesOut}}
 \index{getEdgesOut@{getEdgesOut}!Graph@{Graph}}
 \doxysubsubsection{\texorpdfstring{getEdgesOut()}{getEdgesOut()}}
@@ -184,10 +178,12 @@ Function that calls the recursive function to find the shortest path between all
 \begin{DoxyParams}{Parameters}
 {\em path} & The shortest path between all nodes \\
 \hline
-{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances \\
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances\\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{Returns}
+Time Complexity -\/ O(\+V$^\wedge$2)
+
+V is the number of nodes \begin{DoxyReturn}{Returns}
 The total distance travelled 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_graph_ab48285d4da65e69af7a8ce7cf7150312}\label{class_graph_ab48285d4da65e69af7a8ce7cf7150312}} 
@@ -208,10 +204,12 @@ Minimum distance recursive algorithm to find the shortest path between all nodes
 \hline
 {\em valid} & Boolean used to know if the path is valid \\
 \hline
-{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances \\
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances\\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_graph_a696df0177247b335502c37e8852080b6}\label{class_graph_a696df0177247b335502c37e8852080b6}} 
+Time Complexity -\/ O(\+E)
+
+E is the number of edges of each node \mbox{\Hypertarget{class_graph_a696df0177247b335502c37e8852080b6}\label{class_graph_a696df0177247b335502c37e8852080b6}} 
 \index{Graph@{Graph}!nearestNeighbor@{nearestNeighbor}}
 \index{nearestNeighbor@{nearestNeighbor}!Graph@{Graph}}
 \doxysubsubsection{\texorpdfstring{nearestNeighbor()}{nearestNeighbor()}}
@@ -219,12 +217,16 @@ Minimum distance recursive algorithm to find the shortest path between all nodes
 
 Nearest Neighbor algorithm to find the shortest path between all nodes 
 \begin{DoxyParams}{Parameters}
+{\em start\+Node} & The node where the algorithm starts \\
+\hline
 {\em total\+Distance} & The total distance travelled \\
 \hline
-{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances \\
+{\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances\\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{Returns}
+Time Complexity -\/ O(\+V$^\wedge$2)
+
+V is the number of nodes \begin{DoxyReturn}{Returns}
 The shortest path between all nodes 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_graph_ad9521b51cd314e14ecb15b6acdd072e8}\label{class_graph_ad9521b51cd314e14ecb15b6acdd072e8}} 
@@ -262,6 +264,8 @@ Auxiliar function to Prim\textquotesingle{}s algorithm but with a worse 2-\/appr
 {\em prim\+Visit} & The vector with all nodes and sorted by prim\textquotesingle{}s algorithm \\
 \hline
 {\em pre\+Order} & The vector with all nodes after ordering \\
+\hline
+{\em mst} & The graph representing the MST after Prim\textquotesingle{}s algorithm \\
 \hline
 {\em distance\+Type} & Boolean used to know if we want the real distances or the Haversine distances\\
 \hline

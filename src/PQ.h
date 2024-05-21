@@ -7,42 +7,56 @@ template <class T>
 class MutablePriorityQueue {
     std::vector<T*> H;
     /**
-     * @brief Auxiliar function for priority queue used in prim algorithm
+     * Auxiliar function for priority queue used in prim algorithm
+     * @param i Index of the element to be heapified
+     * @details Time complexity: O(log n)
+     * @details n is the number of elements in the priority queue
      */
     void heapifyUp(unsigned i);
     /**
-     * @brief Auxiliar function for priority queue used in prim algorithm
+     * Auxiliar function for priority queue used in prim algorithm
+     * @param i Index of the element to be heapified
+     * @details Time complexity: O(log n)
+     * @details n is the number of elements in the priority queue
      */
     void heapifyDown(unsigned i);
 
     /**
-     * @brief Auxiliar function for priority queue used in prim algorithm
+     * Auxiliar function for priority queue used in prim algorithm
      * @param i Index of the element to be set
      * @param x Element to be set
+     * @details Time complexity: O(1)
      */
     inline void set(unsigned i, T* x);
 public:
     /**
-     * @brief Construct a new Mutable Priority Queue object
+     * Construct a new Mutable Priority Queue object
      */
     MutablePriorityQueue();
     /**
-     * @brief Insert a new element in the priority queue
+     * Insert a new element in the priority queue
      * @param x Element to be inserted
+     * @details Time complexity: O(log n)
+     * @details n is the number of elements in the priority queue
      */
     void insert(T* x);
     /**
-     * @brief Extract the minimum element from the priority queue
+     * Extract the minimum element from the priority queue
+     * @details Time complexity: O(log n)
+     * @details n is the number of elements in the priority queue
      * @return T* Minimum element
      */
     T* extractMin();
     /**
-     * @brief Decrease the key of an element in the priority queue
+     * Decrease the key of an element in the priority queue
      * @param x Element to decrease the key
+     * @details Time complexity: O(log n)
+     * @details n is the number of elements in the priority queue
      */
     void decreaseKey(T* x);
     /**
-     * @brief Check if the priority queue is empty
+     * Check if the priority queue is empty
+     * @details Time complexity: O(1)
      * @return true if the priority queue is empty, false otherwise
      */
     bool empty();

@@ -234,7 +234,7 @@ vector<int> Graph::nearestNeighbor(int startNode, double &totalDistance, bool di
     return path;
 }
 
-void Graph::minimumDistanceRec(Node *node, double& distance, vector<int> &path, unsigned int count, bool& valid, bool distanceType) {
+void Graph::minimumDistanceRec(Node* node, double& distance, vector<int>& path, unsigned int count, bool& valid, bool distanceType) {
     if (!valid) return;
     double minDist = numeric_limits<double>::infinity();
     Edge* e = nullptr;

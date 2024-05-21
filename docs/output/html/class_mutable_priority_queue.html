@@ -82,19 +82,14 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aba8ebedcbe659f2680bac229cfaca526"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutable_priority_queue.html#aba8ebedcbe659f2680bac229cfaca526">MutablePriorityQueue</a> ()</td></tr>
-<tr class="memdesc:aba8ebedcbe659f2680bac229cfaca526"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new Mutable Priority Queue object.  <a href="class_mutable_priority_queue.html#aba8ebedcbe659f2680bac229cfaca526">More...</a><br /></td></tr>
 <tr class="separator:aba8ebedcbe659f2680bac229cfaca526"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a058fc182052af82e10cc3719e448b62d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutable_priority_queue.html#a058fc182052af82e10cc3719e448b62d">insert</a> (T *x)</td></tr>
-<tr class="memdesc:a058fc182052af82e10cc3719e448b62d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insert a new element in the priority queue.  <a href="class_mutable_priority_queue.html#a058fc182052af82e10cc3719e448b62d">More...</a><br /></td></tr>
 <tr class="separator:a058fc182052af82e10cc3719e448b62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3880874d7364279ac0d6d31302b28853"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutable_priority_queue.html#a3880874d7364279ac0d6d31302b28853">extractMin</a> ()</td></tr>
-<tr class="memdesc:a3880874d7364279ac0d6d31302b28853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the minimum element from the priority queue.  <a href="class_mutable_priority_queue.html#a3880874d7364279ac0d6d31302b28853">More...</a><br /></td></tr>
 <tr class="separator:a3880874d7364279ac0d6d31302b28853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0878839cc1d2dba2b8ab2e589ecc6405"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutable_priority_queue.html#a0878839cc1d2dba2b8ab2e589ecc6405">decreaseKey</a> (T *x)</td></tr>
-<tr class="memdesc:a0878839cc1d2dba2b8ab2e589ecc6405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrease the key of an element in the priority queue.  <a href="class_mutable_priority_queue.html#a0878839cc1d2dba2b8ab2e589ecc6405">More...</a><br /></td></tr>
 <tr class="separator:a0878839cc1d2dba2b8ab2e589ecc6405"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2edbb1f4a6fa3ff735700dfcebebe8d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mutable_priority_queue.html#a2edbb1f4a6fa3ff735700dfcebebe8d4">empty</a> ()</td></tr>
-<tr class="memdesc:a2edbb1f4a6fa3ff735700dfcebebe8d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the priority queue is empty.  <a href="class_mutable_priority_queue.html#a2edbb1f4a6fa3ff735700dfcebebe8d4">More...</a><br /></td></tr>
 <tr class="separator:a2edbb1f4a6fa3ff735700dfcebebe8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -111,8 +106,7 @@ template&lt;class T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Construct a new Mutable Priority Queue object. </p>
+<p >Construct a new Mutable Priority Queue object </p>
 
 </div>
 </div>
@@ -134,14 +128,14 @@ template&lt;class T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Decrease the key of an element in the priority queue. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p >Decrease the key of an element in the priority queue </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x</td><td>Element to decrease the key </td></tr>
+    <tr><td class="paramname">x</td><td>Element to decrease the key</td></tr>
   </table>
   </dd>
 </dl>
+<p>Time complexity: O(log n)</p>
+<p >n is the number of elements in the priority queue </p>
 
 </div>
 </div>
@@ -158,9 +152,8 @@ template&lt;class T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Check if the priority queue is empty. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if the priority queue is empty, false otherwise </dd></dl>
+<p >Check if the priority queue is empty</p>
+<p >Time complexity: O(1) </p><dl class="section return"><dt>Returns</dt><dd>true if the priority queue is empty, false otherwise </dd></dl>
 
 </div>
 </div>
@@ -177,9 +170,9 @@ template&lt;class T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Extract the minimum element from the priority queue. </p>
-<dl class="section return"><dt>Returns</dt><dd>T* Minimum element </dd></dl>
+<p >Extract the minimum element from the priority queue</p>
+<p >Time complexity: O(log n)</p>
+<p >n is the number of elements in the priority queue </p><dl class="section return"><dt>Returns</dt><dd>T* Minimum element </dd></dl>
 
 </div>
 </div>
@@ -200,14 +193,14 @@ template&lt;class T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Insert a new element in the priority queue. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p >Insert a new element in the priority queue </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">x</td><td>Element to be inserted </td></tr>
+    <tr><td class="paramname">x</td><td>Element to be inserted</td></tr>
   </table>
   </dd>
 </dl>
+<p>Time complexity: O(log n)</p>
+<p >n is the number of elements in the priority queue </p>
 
 </div>
 </div>

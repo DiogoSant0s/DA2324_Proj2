@@ -276,7 +276,7 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p>Time Complexity - O(1) </p><dl class="section return"><dt>Returns</dt><dd>The shortest path between the two nodes </dd></dl>
+<p>Time Complexity - O(1) </p>
 
 </div>
 </div>
@@ -348,7 +348,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <p>Time Complexity - O(V^2)</p>
-<p >V is the number of nodes </p><dl class="section return"><dt>Returns</dt><dd>The shortest path between the two nodes </dd></dl>
+<p >V is the number of nodes </p>
 
 </div>
 </div>
@@ -468,11 +468,12 @@ Public Member Functions</h2></td></tr>
 <p >Function that calls the recursive function to find the shortest path between all nodes using a minimum distance algorithm </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">path</td><td>The shortest path between all nodes </td></tr>
-    <tr><td class="paramname">distanceType</td><td>Boolean used to know if we want the real distances or the Haversine distances </td></tr>
+    <tr><td class="paramname">distanceType</td><td>Boolean used to know if we want the real distances or the Haversine distances</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The total distance travelled </dd></dl>
+<p>Time Complexity - O(V^2)</p>
+<p >V is the number of nodes </p><dl class="section return"><dt>Returns</dt><dd>The total distance travelled </dd></dl>
 
 </div>
 </div>
@@ -532,10 +533,12 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">path</td><td>The shortest path between all nodes </td></tr>
     <tr><td class="paramname">count</td><td>The number of nodes visited </td></tr>
     <tr><td class="paramname">valid</td><td>Boolean used to know if the path is valid </td></tr>
-    <tr><td class="paramname">distanceType</td><td>Boolean used to know if we want the real distances or the Haversine distances </td></tr>
+    <tr><td class="paramname">distanceType</td><td>Boolean used to know if we want the real distances or the Haversine distances</td></tr>
   </table>
   </dd>
 </dl>
+<p>Time Complexity - O(E)</p>
+<p >E is the number of edges of each node </p>
 
 </div>
 </div>
@@ -572,12 +575,14 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p >Nearest Neighbor algorithm to find the shortest path between all nodes </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">startNode</td><td>The node where the algorithm starts </td></tr>
     <tr><td class="paramname">totalDistance</td><td>The total distance travelled </td></tr>
-    <tr><td class="paramname">distanceType</td><td>Boolean used to know if we want the real distances or the Haversine distances </td></tr>
+    <tr><td class="paramname">distanceType</td><td>Boolean used to know if we want the real distances or the Haversine distances</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The shortest path between all nodes </dd></dl>
+<p>Time Complexity - O(V^2)</p>
+<p >V is the number of nodes </p><dl class="section return"><dt>Returns</dt><dd>The shortest path between all nodes </dd></dl>
 
 </div>
 </div>
@@ -680,6 +685,7 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">nodeId</td><td>The node's id </td></tr>
     <tr><td class="paramname">primVisit</td><td>The vector with all nodes and sorted by prim's algorithm </td></tr>
     <tr><td class="paramname">preOrder</td><td>The vector with all nodes after ordering </td></tr>
+    <tr><td class="paramname">mst</td><td>The graph representing the MST after Prim's algorithm </td></tr>
     <tr><td class="paramname">distanceType</td><td>Boolean used to know if we want the real distances or the Haversine distances</td></tr>
   </table>
   </dd>

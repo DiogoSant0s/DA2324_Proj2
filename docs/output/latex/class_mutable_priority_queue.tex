@@ -8,15 +8,15 @@
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{class_mutable_priority_queue_aba8ebedcbe659f2680bac229cfaca526}{Mutable\+Priority\+Queue}} ()
-\begin{DoxyCompactList}\small\item\em Construct a new Mutable Priority Queue object. \end{DoxyCompactList}\item 
+\item 
 void \mbox{\hyperlink{class_mutable_priority_queue_a058fc182052af82e10cc3719e448b62d}{insert}} (T $\ast$x)
-\begin{DoxyCompactList}\small\item\em Insert a new element in the priority queue. \end{DoxyCompactList}\item 
+\item 
 T $\ast$ \mbox{\hyperlink{class_mutable_priority_queue_a3880874d7364279ac0d6d31302b28853}{extract\+Min}} ()
-\begin{DoxyCompactList}\small\item\em Extract the minimum element from the priority queue. \end{DoxyCompactList}\item 
+\item 
 void \mbox{\hyperlink{class_mutable_priority_queue_a0878839cc1d2dba2b8ab2e589ecc6405}{decrease\+Key}} (T $\ast$x)
-\begin{DoxyCompactList}\small\item\em Decrease the key of an element in the priority queue. \end{DoxyCompactList}\item 
+\item 
 bool \mbox{\hyperlink{class_mutable_priority_queue_a2edbb1f4a6fa3ff735700dfcebebe8d4}{empty}} ()
-\begin{DoxyCompactList}\small\item\em Check if the priority queue is empty. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Constructor \& Destructor Documentation}
@@ -27,11 +27,7 @@ bool \mbox{\hyperlink{class_mutable_priority_queue_a2edbb1f4a6fa3ff735700dfcebeb
 {\footnotesize\ttfamily template$<$class T $>$ \\
 \mbox{\hyperlink{class_mutable_priority_queue}{Mutable\+Priority\+Queue}}$<$ T $>$\mbox{\hyperlink{class_mutable_priority_queue}{\+::\+Mutable\+Priority\+Queue}}}
 
-
-
-Construct a new Mutable Priority Queue object. 
-
-
+Construct a new Mutable Priority Queue object 
 
 \doxysubsection{Member Function Documentation}
 \mbox{\Hypertarget{class_mutable_priority_queue_a0878839cc1d2dba2b8ab2e589ecc6405}\label{class_mutable_priority_queue_a0878839cc1d2dba2b8ab2e589ecc6405}} 
@@ -41,27 +37,23 @@ Construct a new Mutable Priority Queue object.
 {\footnotesize\ttfamily template$<$class T $>$ \\
 void \mbox{\hyperlink{class_mutable_priority_queue}{Mutable\+Priority\+Queue}}$<$ T $>$\+::decrease\+Key (\begin{DoxyParamCaption}\item[{T $\ast$}]{x }\end{DoxyParamCaption})}
 
-
-
-Decrease the key of an element in the priority queue. 
-
-
+Decrease the key of an element in the priority queue 
 \begin{DoxyParams}{Parameters}
-{\em x} & Element to decrease the key \\
+{\em x} & Element to decrease the key\\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{class_mutable_priority_queue_a2edbb1f4a6fa3ff735700dfcebebe8d4}\label{class_mutable_priority_queue_a2edbb1f4a6fa3ff735700dfcebebe8d4}} 
+Time complexity\+: O(log n)
+
+n is the number of elements in the priority queue \mbox{\Hypertarget{class_mutable_priority_queue_a2edbb1f4a6fa3ff735700dfcebebe8d4}\label{class_mutable_priority_queue_a2edbb1f4a6fa3ff735700dfcebebe8d4}} 
 \index{MutablePriorityQueue$<$ T $>$@{MutablePriorityQueue$<$ T $>$}!empty@{empty}}
 \index{empty@{empty}!MutablePriorityQueue$<$ T $>$@{MutablePriorityQueue$<$ T $>$}}
 \doxysubsubsection{\texorpdfstring{empty()}{empty()}}
 {\footnotesize\ttfamily template$<$class T $>$ \\
 bool \mbox{\hyperlink{class_mutable_priority_queue}{Mutable\+Priority\+Queue}}$<$ T $>$\+::empty}
 
+Check if the priority queue is empty
 
-
-Check if the priority queue is empty. 
-
-\begin{DoxyReturn}{Returns}
+Time complexity\+: O(1) \begin{DoxyReturn}{Returns}
 true if the priority queue is empty, false otherwise 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_mutable_priority_queue_a3880874d7364279ac0d6d31302b28853}\label{class_mutable_priority_queue_a3880874d7364279ac0d6d31302b28853}} 
@@ -71,11 +63,11 @@ true if the priority queue is empty, false otherwise
 {\footnotesize\ttfamily template$<$class T $>$ \\
 T $\ast$ \mbox{\hyperlink{class_mutable_priority_queue}{Mutable\+Priority\+Queue}}$<$ T $>$\+::extract\+Min}
 
+Extract the minimum element from the priority queue
 
+Time complexity\+: O(log n)
 
-Extract the minimum element from the priority queue. 
-
-\begin{DoxyReturn}{Returns}
+n is the number of elements in the priority queue \begin{DoxyReturn}{Returns}
 T$\ast$ Minimum element 
 \end{DoxyReturn}
 \mbox{\Hypertarget{class_mutable_priority_queue_a058fc182052af82e10cc3719e448b62d}\label{class_mutable_priority_queue_a058fc182052af82e10cc3719e448b62d}} 
@@ -85,16 +77,14 @@ T$\ast$ Minimum element
 {\footnotesize\ttfamily template$<$class T $>$ \\
 void \mbox{\hyperlink{class_mutable_priority_queue}{Mutable\+Priority\+Queue}}$<$ T $>$\+::insert (\begin{DoxyParamCaption}\item[{T $\ast$}]{x }\end{DoxyParamCaption})}
 
-
-
-Insert a new element in the priority queue. 
-
-
+Insert a new element in the priority queue 
 \begin{DoxyParams}{Parameters}
-{\em x} & Element to be inserted \\
+{\em x} & Element to be inserted\\
 \hline
 \end{DoxyParams}
+Time complexity\+: O(log n)
 
+n is the number of elements in the priority queue 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
